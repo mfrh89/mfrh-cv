@@ -5,7 +5,8 @@ import React from 'react'
 
 import '@payloadcms/next/css'
 
-import { handleServerFunctions, ServerFunctionClient } from 'payload'
+import { handleServerFunctions } from '@payloadcms/next/layouts'
+import type { ServerFunctionClient } from 'payload'
 
 type Args = {
   children: React.ReactNode
