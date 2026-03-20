@@ -21,7 +21,7 @@ const Media: CollectionConfig = {
 }
 
 // ── CV Global ───────────────────────────────────────────
-const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+const serverUrl = process.env.SERVER_URL || 'http://localhost:3000'
 
 const CV: GlobalConfig = {
   slug: 'cv',
@@ -140,8 +140,8 @@ export default buildConfig({
     livePreview: {
       url: ({ globalConfig }) =>
         globalConfig?.slug === 'cover-letter'
-          ? (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000') + '/cover-letter'
-          : (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'),
+          ? (process.env.SERVER_URL || 'http://localhost:3000') + '/cover-letter'
+          : (process.env.SERVER_URL || 'http://localhost:3000'),
       globals: ['cv', 'cover-letter'],
     },
   },
