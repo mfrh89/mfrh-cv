@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { getCV, getCoverLetter } from '@/lib/payload'
 import { Header } from '@/components/Header'
 import { PrintButton } from '@/components/PrintButton'
+import { RefreshOnSave } from '@/components/live/RefreshOnSave'
 import Link from 'next/link'
 
 export default async function CoverLetterPage() {
@@ -77,6 +78,7 @@ export default async function CoverLetterPage() {
       </main>
 
       <PrintButton />
+      <RefreshOnSave serverURL={process.env.SERVER_URL || 'http://localhost:3000'} />
     </>
   )
 }
