@@ -6,6 +6,7 @@ import { AboutSection, SkillsSection } from '@/components/cv/Sidebar'
 import { ExperienceSection } from '@/components/cv/ExperienceSection'
 import { PrintButton } from '@/components/PrintButton'
 import { MobileNav } from '@/components/cv/MobileNav'
+import { RefreshOnSave } from '@/components/live/RefreshOnSave'
 import Link from 'next/link'
 
 function mapSidebarData(cv: Awaited<ReturnType<typeof getCV>>) {
@@ -77,6 +78,7 @@ export default async function CVPage() {
 
       <PrintButton />
       <MobileNav />
+      <RefreshOnSave serverURL={process.env.SERVER_URL || 'http://localhost:3000'} />
     </>
   )
 }
