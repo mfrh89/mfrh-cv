@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getCV } from '@/lib/payload'
 import { Header } from '@/components/Header'
 import { AboutSection, SkillsSection } from '@/components/cv/Sidebar'

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getCV, getCoverLetter } from '@/lib/payload'
 import { Header } from '@/components/Header'
 import { PrintButton } from '@/components/PrintButton'
