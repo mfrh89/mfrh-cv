@@ -127,6 +127,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || 'postgresql://payload:payload@localhost:5433/payload',
     },
+    push: true,
   }),
 
   editor: lexicalEditor(),
