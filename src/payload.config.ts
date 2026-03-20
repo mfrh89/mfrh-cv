@@ -137,8 +137,8 @@ export default buildConfig({
       titleSuffix: ' | MFRH CV',
     },
     livePreview: {
-      url: ({ globalSlug }) =>
-        globalSlug === 'cover-letter'
+      url: ({ globalConfig }) =>
+        globalConfig?.slug === 'cover-letter'
           ? (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000') + '/cover-letter'
           : (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'),
       globals: ['cv', 'cover-letter'],
