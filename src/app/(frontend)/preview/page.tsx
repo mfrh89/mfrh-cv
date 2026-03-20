@@ -1,7 +1,5 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { headers } from 'next/headers'
-import { redirect } from 'next/navigation'
 import { LiveCV } from '@/components/live/LiveCV'
 import { LiveCoverLetter } from '@/components/live/LiveCoverLetter'
 
@@ -9,20 +7,11 @@ type Props = {
   searchParams: Promise<{ global?: string }>
 }
 
+// Auth is handled at network level (Caddy LAN/Tailscale restriction)
 export default async function PreviewPage({ searchParams }: Props) {
   const { global: globalSlug } = await searchParams
 
-  const headersList = await headers()
   const payload = await getPayload({ config: configPromise })
-
-  // Verify the user is logged in
-  try {
-    const { user } = await payload.auth({ headers: headersList })
-    if (!user) redirect('/admin/login')
-  } catch {
-    redirect('/admin/login')
-  }
-
   const serverURL = process.env.SERVER_URL || 'http://localhost:3000'
 
   if (globalSlug === 'cover-letter') {
