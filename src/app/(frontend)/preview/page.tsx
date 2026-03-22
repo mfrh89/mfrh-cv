@@ -61,6 +61,7 @@ export default async function PreviewPage({ searchParams }: Props) {
             phone: cv.phone || '',
             linkedin: cv.linkedin || '',
             profileImage: cv.profileImage,
+            logo: cv.logo,
           }}
           serverURL={serverURL}
         />
@@ -84,6 +85,7 @@ export default async function PreviewPage({ searchParams }: Props) {
           phone: cv.phone || '',
           linkedin: cv.linkedin || '',
           profileImage: cv.profileImage,
+          logo: cv.logo,
           summary: cv.summary || '',
           skillMaxDots: cv.skillMaxDots ?? 5,
           skills: (cv.skills || []).map((s: any) => ({ name: s.name || '', level: s.level ?? 0 })),
