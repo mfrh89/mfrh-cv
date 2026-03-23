@@ -1,11 +1,12 @@
 interface ExperienceSectionProps {
-  experience: readonly {
-    readonly duration: string
-    readonly startDate: string
-    readonly endDate: string
-    readonly company: string
-    readonly role: string
-    readonly description: string
+  experience: {
+    duration?: string | null
+    startDate?: string | null
+    endDate?: string | null
+    company?: string | null
+    role?: string | null
+    description?: string | null
+    id?: string | null
   }[]
 }
 
