@@ -9,12 +9,13 @@ import { PrintButton } from '@/components/PrintButton'
 import { RefreshOnSave } from '@/components/live/RefreshOnSave'
 import Link from 'next/link'
 
-export default async function CoverLetterTokenPage({ params }: { params: { token: string } }) {
+export default async function CoverLetterTokenPage({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = await params
   const payload = await getPayload({ config: configPromise })
 
   const result = await payload.find({
     collection: 'cover-letters',
-    where: { token: { equals: params.token } },
+    where: { token: { equals: token } },
     limit: 1,
   })
 
@@ -31,7 +32,7 @@ export default async function CoverLetterTokenPage({ params }: { params: { token
         <Link href="/" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
           CV
         </Link>
-        <Link href={`/cover-letter/${params.token}`} className="text-xs font-bold text-[var(--color-text)] underline underline-offset-4">
+        <Link href={`/cover-letter/${token}`} className="text-xs font-bold text-[var(--color-text)] underline underline-offset-4">
           Anschreiben
         </Link>
       </nav>
