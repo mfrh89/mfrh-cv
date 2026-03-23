@@ -40,8 +40,8 @@ export function LiveCoverLetter({
   const profileImage = typeof cvData.profileImage === 'object' && cvData.profileImage?.url ? new URL(cvData.profileImage.url, serverURL).pathname : null
 
   return (
-    <main className="flex justify-center py-8 print:py-0">
-      <div className="cover-letter-page flex w-full max-w-[260mm] min-h-[297mm] flex-col print:w-[210mm] print:shadow-none">
+    <main className="flex justify-center py-8 print:py-0 overflow-hidden">
+      <div className="cover-letter-page flex w-full max-w-[260mm] min-h-[297mm] flex-col print:w-[210mm] print:shadow-none break-words">
         <Header
           name={cvData.name || ''}
           title={cvData.title || ''}

@@ -41,8 +41,8 @@ export default async function CoverLetterTokenPage({ params }: { params: Promise
       </nav>
 
       {/* Cover Letter Page */}
-      <main className="flex justify-center py-8 print:py-0">
-        <div className="cover-letter-page flex w-[260mm] min-h-[297mm] flex-col print:w-[210mm] print:shadow-none">
+      <main className="flex justify-center py-8 print:py-0 overflow-hidden">
+        <div className="cover-letter-page flex w-full max-w-[260mm] min-h-[297mm] flex-col print:w-[210mm] print:shadow-none break-words">
           {/* ── Full-width Header (same as CV) ── */}
           <Header
             name={cv.name || ''}
