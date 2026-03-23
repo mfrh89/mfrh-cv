@@ -15,7 +15,10 @@ export default async function CoverLetterTokenPage({ params }: { params: Promise
 
   const result = await payload.find({
     collection: 'cover-letters',
-    where: { token: { equals: token } },
+    where: {
+      token: { equals: token },
+      _status: { equals: 'published' },
+    },
     limit: 1,
   })
 
