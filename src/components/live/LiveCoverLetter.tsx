@@ -4,6 +4,7 @@ import { useLivePreview } from '@payloadcms/live-preview-react'
 import { Header } from '@/components/Header'
 
 type CoverLetterData = {
+  id: number | string
   recipientSalutation: string
   body: string
   closing: string

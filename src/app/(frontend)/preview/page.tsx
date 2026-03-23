@@ -53,6 +53,7 @@ export default async function PreviewPage({ searchParams }: Props) {
         </div>
         <LiveCoverLetter
           initialData={{
+            id: letter.id,
             recipientSalutation: letter.recipientSalutation || '',
             body: letter.body || '',
             closing: letter.closing || '',
