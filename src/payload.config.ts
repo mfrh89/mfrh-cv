@@ -125,6 +125,16 @@ const CoverLetters: CollectionConfig = {
     useAsTitle: 'company',
     description: 'Per-application cover letters. Share the token URL with employers.',
   },
+  hooks: {
+    beforeChange: [
+      ({ data, operation }) => {
+        if (operation === 'create' && !data.token) {
+          data.token = randomToken()
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'token',
@@ -132,7 +142,6 @@ const CoverLetters: CollectionConfig = {
       label: 'URL Token',
       required: true,
       unique: true,
-      defaultValue: () => randomToken(),
       admin: { description: 'Auto-generated 6-char token used in the public URL (e.g. /cover-letter/a7f3k9)' },
     },
     { name: 'company', type: 'text', label: 'Company', required: true },
