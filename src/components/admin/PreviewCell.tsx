@@ -6,12 +6,19 @@ export default function PreviewCell({ rowData }: DefaultCellComponentProps) {
   const id = rowData?.id
   if (!id) return null
 
+  const isDraft = rowData?._status === 'draft'
+  const token = rowData?.token
+  const href = isDraft || !token
+    ? `/preview?collection=cover-letters&id=${id}`
+    : `/cover-letter/${token}`
+  const title = isDraft || !token ? 'Draft Preview' : 'Published'
+
   return (
     <a
-      href={`/preview?collection=cover-letters&id=${id}`}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
-      title="Draft Preview"
+      title={title}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
