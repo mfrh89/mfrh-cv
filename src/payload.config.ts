@@ -155,22 +155,6 @@ const CoverLetters: CollectionConfig = {
   ],
 }
 
-// ── Cover Letter Global ─────────────────────────────────
-const CoverLetter: GlobalConfig = {
-  slug: 'cover-letter',
-  label: 'Cover Letter (Anschreiben)',
-  versions: { drafts: true },
-  admin: {
-    preview: () => `${serverUrl}/preview?global=cover-letter`,
-  },
-  fields: [
-    { name: 'recipientSalutation', type: 'text', label: 'Salutation (e.g. Sehr geehrtes ... Team)' },
-    { name: 'body', type: 'textarea', label: 'Letter Body' },
-    { name: 'closing', type: 'text', label: 'Closing (e.g. Mit freundlichen Grüßen)' },
-    { name: 'senderName', type: 'text', label: 'Sender Name' },
-  ],
-}
-
 // ── Payload Config ──────────────────────────────────────
 export default buildConfig({
   serverURL: serverUrl,
@@ -191,11 +175,8 @@ export default buildConfig({
       titleSuffix: ' | MFRH CV',
     },
     livePreview: {
-      url: ({ globalConfig }) =>
-        globalConfig?.slug === 'cover-letter'
-          ? `${serverUrl}/preview?global=cover-letter`
-          : `${serverUrl}/preview?global=cv`,
-      globals: ['cv', 'cover-letter'],
+      url: () => `${serverUrl}/preview?global=cv`,
+      globals: ['cv'],
     },
   },
 
@@ -210,7 +191,7 @@ export default buildConfig({
     },
   ],
 
-  globals: [CV, CoverLetter],
+  globals: [CV],
 
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

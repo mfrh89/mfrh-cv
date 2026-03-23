@@ -3,7 +3,6 @@ import configPromise from '@payload-config'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { LiveCV } from '@/components/live/LiveCV'
-import { LiveCoverLetter } from '@/components/live/LiveCoverLetter'
 
 type Props = {
   searchParams: Promise<{ global?: string }>
@@ -37,37 +36,6 @@ export default async function PreviewPage({ searchParams }: Props) {
   }
 
   const serverURL = process.env.SERVER_URL || 'http://localhost:3000'
-
-  if (globalSlug === 'cover-letter') {
-    const cv = await payload.findGlobal({ slug: 'cv', draft: true })
-    const letter = await payload.findGlobal({ slug: 'cover-letter', draft: true })
-
-    return (
-      <>
-        <div className="bg-yellow-500 text-black text-center py-2 text-sm font-bold print-hidden">
-          PREVIEW - Draft-Version
-        </div>
-        <LiveCoverLetter
-          initialData={{
-            recipientSalutation: letter.recipientSalutation || '',
-            body: letter.body || '',
-            closing: letter.closing || '',
-            senderName: letter.senderName || '',
-          }}
-          cvData={{
-            name: cv.name || '',
-            title: cv.title || '',
-            email: cv.email || '',
-            phone: cv.phone || '',
-            linkedin: cv.linkedin || '',
-            profileImage: typeof cv.profileImage === 'object' && cv.profileImage ? { url: cv.profileImage.url ?? undefined } : null,
-            logo: typeof cv.logo === 'object' && cv.logo ? { url: cv.logo.url ?? undefined } : null,
-          }}
-          serverURL={serverURL}
-        />
-      </>
-    )
-  }
 
   // Default: CV preview
   const cv = await payload.findGlobal({ slug: 'cv', draft: true })

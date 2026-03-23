@@ -6,7 +6,3 @@ export async function getCV() {
   return payload.findGlobal({ slug: 'cv' })
 }
 
-export async function getCoverLetter() {
-  const payload = await getPayload({ config: configPromise })
-  return payload.findGlobal({ slug: 'cover-letter' })
-}

@@ -31,9 +31,6 @@ export default async function CVPage() {
         <Link href="/" className="text-xs font-bold text-[var(--color-text)] underline underline-offset-4">
           CV
         </Link>
-        <Link href="/cover-letter" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-          Anschreiben
-        </Link>
       </nav>
 
       {/* CV Page */}
