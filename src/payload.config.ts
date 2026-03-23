@@ -31,7 +31,10 @@ const CV: GlobalConfig = {
   label: 'CV',
   versions: { drafts: true },
   admin: {
-    preview: () => `${serverUrl}/preview?global=cv`,
+    preview: (doc) => {
+      if ((doc as any)?._status === 'draft') return `${serverUrl}/preview?global=cv`
+      return `${serverUrl}/`
+    },
   },
   fields: [
     { name: 'name', type: 'text', label: 'Full Name', required: true },
