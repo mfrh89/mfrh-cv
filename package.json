@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "cross-env NODE_ENV=development tsx db/push-schema.ts && next start"
+    "start": "node db/migration.mjs && next start"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
