@@ -10,80 +10,115 @@ export { asResolvedProjects, isShareExpired } from './utils'
 const getPayloadClient = cache(async () => getPayload({ config: configPromise }))
 
 export const getCV = cache(async (options: { draft?: boolean } = {}) => {
-  const payload = await getPayloadClient()
-  const data = await (payload as any).findGlobal({
-    slug: 'cv',
-    depth: 1,
-    draft: options.draft,
-  })
-  return data as import('./types').CVData
+  try {
+    const payload = await getPayloadClient()
+    const data = await (payload as any).findGlobal({
+      slug: 'cv',
+      depth: 1,
+      draft: options.draft,
+    })
+    return data as import('./types').CVData
+  } catch (error) {
+    console.error('Error fetching CV:', error)
+    return {} as import('./types').CVData
+  }
 })
 
 export const getSiteSettings = cache(async () => {
-  const payload = await getPayloadClient()
-  const data = await (payload as any).findGlobal({ slug: 'site-settings', depth: 1 })
-  return data as import('./types').SiteSettingsData
+  try {
+    const payload = await getPayloadClient()
+    const data = await (payload as any).findGlobal({ slug: 'site-settings', depth: 1 })
+    return data as import('./types').SiteSettingsData
+  } catch (error) {
+    console.error('Error fetching site settings:', error)
+    return {} as import('./types').SiteSettingsData
+  }
 })
 
 export const getPageBySlug = cache(async (slug: string, options: { draft?: boolean } = {}) => {
-  const payload = await getPayloadClient()
-  const result = await (payload as any).find({
-    collection: 'pages',
-    depth: 2,
-    limit: 1,
-    where: { slug: { equals: slug } },
-    draft: options.draft,
-  })
-  return ((result.docs || [])[0] || null) as import('./types').PageData | null
+  try {
+    const payload = await getPayloadClient()
+    const result = await (payload as any).find({
+      collection: 'pages',
+      depth: 2,
+      limit: 1,
+      where: { slug: { equals: slug } },
+      draft: options.draft,
+    })
+    return ((result.docs || [])[0] || null) as import('./types').PageData | null
+  } catch (error) {
+    console.error(`Error fetching page ${slug}:`, error)
+    return null
+  }
 })
 
 export const getProjects = cache(async (options: { draft?: boolean } = {}) => {
-  const payload = await getPayloadClient()
-  const result = await (payload as any).find({
-    collection: 'projects',
-    depth: 2,
-    limit: 100,
-    sort: '-updatedAt',
-    draft: options.draft,
-  })
-  return (result.docs || []) as import('./types').ProjectData[]
+  try {
+    const payload = await getPayloadClient()
+    const result = await (payload as any).find({
+      collection: 'projects',
+      depth: 2,
+      limit: 100,
+      sort: '-updatedAt',
+      draft: options.draft,
+    })
+    return (result.docs || []) as import('./types').ProjectData[]
+  } catch (error) {
+    console.error('Error fetching projects:', error)
+    return []
+  }
 })
 
 export const getFeaturedProjects = cache(async (options: { draft?: boolean } = {}) => {
-  const payload = await getPayloadClient()
-  const result = await (payload as any).find({
-    collection: 'projects',
-    depth: 2,
-    limit: 6,
-    sort: '-updatedAt',
-    where: { featured: { equals: true } },
-    draft: options.draft,
-  })
-  return (result.docs || []) as import('./types').ProjectData[]
+  try {
+    const payload = await getPayloadClient()
+    const result = await (payload as any).find({
+      collection: 'projects',
+      depth: 2,
+      limit: 6,
+      sort: '-updatedAt',
+      where: { featured: { equals: true } },
+      draft: options.draft,
+    })
+    return (result.docs || []) as import('./types').ProjectData[]
+  } catch (error) {
+    console.error('Error fetching featured projects:', error)
+    return []
+  }
 })
 
 export const getProjectBySlug = cache(async (slug: string, options: { draft?: boolean } = {}) => {
-  const payload = await getPayloadClient()
-  const result = await (payload as any).find({
-    collection: 'projects',
-    depth: 2,
-    limit: 1,
-    where: { slug: { equals: slug } },
-    draft: options.draft,
-  })
-  return ((result.docs || [])[0] || null) as import('./types').ProjectData | null
+  try {
+    const payload = await getPayloadClient()
+    const result = await (payload as any).find({
+      collection: 'projects',
+      depth: 2,
+      limit: 1,
+      where: { slug: { equals: slug } },
+      draft: options.draft,
+    })
+    return ((result.docs || [])[0] || null) as import('./types').ProjectData | null
+  } catch (error) {
+    console.error(`Error fetching project ${slug}:`, error)
+    return null
+  }
 })
 
 export async function getPublishedCoverLetterByToken(token: string, options: { draft?: boolean } = {}): Promise<import('./types').CoverLetterData | null> {
-  const payload = await getPayloadClient()
-  const result = await (payload as any).find({
-    collection: 'cover-letters',
-    where: {
-      token: { equals: token },
-      ...(options.draft ? {} : { _status: { equals: 'published' } }),
-    },
-    limit: 1,
-    draft: options.draft,
-  })
-  return ((result.docs || [])[0] || null) as import('./types').CoverLetterData | null
+  try {
+    const payload = await getPayloadClient()
+    const result = await (payload as any).find({
+      collection: 'cover-letters',
+      where: {
+        token: { equals: token },
+        ...(options.draft ? {} : { _status: { equals: 'published' } }),
+      },
+      limit: 1,
+      draft: options.draft,
+    })
+    return ((result.docs || [])[0] || null) as import('./types').CoverLetterData | null
+  } catch (error) {
+    console.error(`Error fetching cover letter token ${token}:`, error)
+    return null
+  }
 }
