@@ -1,7 +1,8 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { NextResponse } from 'next/server'
-import { execSync } from 'child_process'
+import fs from 'fs'
+import path from 'path'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,14 +17,7 @@ export async function GET(request: Request) {
   try {
     const payload = await getPayload({ config: configPromise })
     
-    // We explicitly tell Payload to force push the database schema
-    // In case the DB is missing tables, this will fix it.
-    // getPayload alone might not block/await the push fully before returning.
-    // However since Payload doesn't expose a clean push() we fall back to creating docs
-    
-    // Check if pages exist, wait 2s to allow async push to settle if it was triggered
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
+    // 1. Create a home page if it doesn't exist
     const existingPages = await (payload as any).find({
       collection: 'pages',
       where: { slug: { equals: 'home' } },
@@ -49,6 +43,7 @@ export async function GET(request: Request) {
       pageMsg = 'Home page created.'
     }
 
+    // 2. Create Admin User if none exists
     const existingUsers = await (payload as any).find({ collection: 'users' })
     let userMsg = 'Admin user already exists.'
     if (existingUsers.totalDocs === 0) {
@@ -62,7 +57,36 @@ export async function GET(request: Request) {
       userMsg = 'Admin user created (admin@mfrh.xyz / changeme123).'
     }
 
-    return NextResponse.json({ success: true, message: `Database seeded successfully. ${pageMsg} ${userMsg}` })
+    // 3. Seed CV data from JSON
+    let cvMsg = 'CV data skipped (file not found).'
+    const cvPath = path.resolve('content/cv/index.json')
+    if (fs.existsSync(cvPath)) {
+      const cvData = JSON.parse(fs.readFileSync(cvPath, 'utf-8'))
+      await payload.updateGlobal({
+        slug: 'cv',
+        data: {
+          name: cvData.name,
+          title: cvData.title,
+          email: cvData.email,
+          phone: cvData.phone,
+          linkedin: cvData.linkedin,
+          summary: cvData.summary,
+          skillMaxDots: cvData.skillMaxDots,
+          experience: cvData.experience,
+          skills: cvData.skills,
+          languages: cvData.languages,
+          education: cvData.education,
+          certificates: cvData.certificates,
+          _status: 'published'
+        } as any,
+      })
+      cvMsg = 'CV data seeded.'
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: `Database seeded successfully. ${pageMsg} ${userMsg} ${cvMsg}` 
+    })
   } catch (error: any) {
     console.error('[Seed Route Error]', error)
     return NextResponse.json({ error: error.message }, { status: 500 })

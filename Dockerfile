@@ -38,6 +38,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/next.config.ts ./
 COPY --from=builder /app/package.json ./
+COPY --from=builder /app/content ./content
 COPY --from=prod-deps --chown=nextjs:nodejs /app/node_modules ./node_modules
 
 # DB schema init script
