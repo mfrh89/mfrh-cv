@@ -10,7 +10,9 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 // ── Shared Helpers ─────────────────────────────────────
-const serverUrl = process.env.SERVER_URL || 'http://localhost:3000'
+const serverUrl = process.env.SERVER_URL || 
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'))
 
 function randomToken(length = 10): string {
   return crypto.randomBytes(18).toString('base64url').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, length)
