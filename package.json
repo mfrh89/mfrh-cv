@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "tsx db/push-schema.ts && next start"
+    "start": "cross-env NODE_ENV=development tsx db/push-schema.ts && next start"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
