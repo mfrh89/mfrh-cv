@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node db/migration.mjs && next start"
+    "start": "next start"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.19",
