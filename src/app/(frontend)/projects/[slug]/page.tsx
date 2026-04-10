@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
+import { getDraftMode } from '@/lib/draft'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -16,7 +16,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
   const project = await getProjectBySlug(slug, { draft })
   if (!project) return { title: 'Projekt nicht gefunden' }
   return {
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await params
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
   const [project, siteSettings] = await Promise.all([
     getProjectBySlug(slug, { draft }),
     getSiteSettings()

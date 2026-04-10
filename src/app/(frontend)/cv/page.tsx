@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { draftMode } from 'next/headers'
+import { getDraftMode } from '@/lib/draft'
 import { CVWeb } from '@/components/cv/CVWeb'
 import { PrintButton } from '@/components/PrintButton'
 import { SiteFooter } from '@/components/site/SiteFooter'
@@ -13,7 +13,7 @@ export const metadata = {
 }
 
 export default async function CVPage() {
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
   const [cv, siteSettings] = await Promise.all([getCV({ draft }), getSiteSettings()])
   const serverURL = process.env.SERVER_URL || 'http://localhost:3000'
 

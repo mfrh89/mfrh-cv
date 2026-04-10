@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { JetBrains_Mono } from 'next/font/google'
-import { draftMode } from 'next/headers'
+import { getDraftMode } from '@/lib/draft'
 import { DraftBanner } from '@/components/DraftBanner'
 import '../globals.css'
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 }
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
 
   return (
     <html lang="de" className={`${jetbrainsMono.variable} antialiased`}>

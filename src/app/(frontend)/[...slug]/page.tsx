@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
+import { getDraftMode } from '@/lib/draft'
 import { notFound } from 'next/navigation'
 import { BlockRenderer } from '@/components/blocks/BlockRenderer'
 import { SiteFooter } from '@/components/site/SiteFooter'
@@ -18,7 +18,7 @@ function resolveSlug(segments: string[]): string {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
   const page = await getPageBySlug(resolveSlug(slug), { draft })
 
   if (!page) {
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function DynamicPage({ params }: Props) {
   const { slug } = await params
   const resolvedSlug = resolveSlug(slug)
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
 
   const [page, siteSettings] = await Promise.all([
     getPageBySlug(resolvedSlug, { draft }),

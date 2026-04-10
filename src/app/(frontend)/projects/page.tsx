@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import { draftMode } from 'next/headers'
+import { getDraftMode } from '@/lib/draft'
 import { ProjectCard } from '@/components/site/ProjectCard'
 import { SiteFooter } from '@/components/site/SiteFooter'
 import { SiteHeader } from '@/components/site/SiteHeader'
@@ -12,7 +12,7 @@ export const metadata = {
 }
 
 export default async function ProjectsPage() {
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
   const [projects, siteSettings] = await Promise.all([getProjects({ draft }), getSiteSettings()])
 
   return (

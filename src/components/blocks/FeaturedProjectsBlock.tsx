@@ -1,4 +1,4 @@
-import { draftMode } from 'next/headers'
+import { getDraftMode } from '@/lib/draft'
 import Link from 'next/link'
 import type { PageBlock, ProjectData } from '@/lib/payload'
 import { asResolvedProjects, getFeaturedProjects } from '@/lib/payload'
@@ -7,7 +7,7 @@ import { ProjectCard } from '@/components/site/ProjectCard'
 type FeaturedData = Extract<PageBlock, { blockType: 'featuredProjects' }>
 
 export async function FeaturedProjectsBlock({ block }: { block: FeaturedData }) {
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
   const manualProjects = asResolvedProjects(block.projects)
   const projects: ProjectData[] = manualProjects.length
     ? manualProjects.slice(0, 6)

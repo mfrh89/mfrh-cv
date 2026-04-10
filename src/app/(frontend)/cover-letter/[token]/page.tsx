@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
+import { getDraftMode } from '@/lib/draft'
 import { notFound } from 'next/navigation'
 import { CoverLetterDocument } from '@/components/cv/CoverLetterDocument'
 import { PrintButton } from '@/components/PrintButton'
@@ -14,7 +14,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { token } = await params
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
   const letter = await getPublishedCoverLetterByToken(token, { draft })
 
   if (!letter) {
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CoverLetterTokenPage({ params }: Props) {
   const { token } = await params
-  const { isEnabled: draft } = await draftMode()
+  const draft = await getDraftMode()
   const letter = await getPublishedCoverLetterByToken(token, { draft })
 
   if (!letter) notFound()
