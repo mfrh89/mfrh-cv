@@ -5,6 +5,8 @@ interface HeaderProps {
   title: string
   email: string
   phone: string
+  location?: string
+  website?: string
   linkedin: string
   profileImage: string | null
   logo: string | null
@@ -29,12 +31,28 @@ function ProfileImage({ profileImage, name, className }: { profileImage: string 
   )
 }
 
-export function Header({ name, title, email, phone, linkedin, profileImage, logo }: HeaderProps) {
+function ensureExternalUrl(value: string) {
+  if (!value) return ''
+  return value.startsWith('http://') || value.startsWith('https://') ? value : `https://${value}`
+}
+
+function ContactLink({ href, children }: { href?: string; children: React.ReactNode }) {
+  if (!href) {
+    return <p>{children}</p>
+  }
+
   return (
-    <header className="px-4 py-6 md:px-6 md:py-8">
-      {/* Desktop layout: logo | name/title | photo | contact */}
-      <div className="hidden md:flex items-center gap-6">
-        {/* Logo */}
+    <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noreferrer' : undefined}>
+      {children}
+    </a>
+  )
+}
+
+export function Header({ name, title, email, phone, location, website, linkedin, profileImage, logo }: HeaderProps) {
+  return (
+    <header>
+      {/* Desktop layout */}
+      <div className="hidden md:flex cv-desktop-layout items-center gap-6 px-[9mm] pt-[9mm] pb-0">
         {logo && (
           <Image
             src={logo}
@@ -45,7 +63,6 @@ export function Header({ name, title, email, phone, linkedin, profileImage, logo
           />
         )}
 
-        {/* Left: Name + Title */}
         <div className="flex-1">
           <h1 className="text-[28px] font-bold tracking-[0.05em] uppercase text-[var(--color-text)]">
             {name}
@@ -57,32 +74,40 @@ export function Header({ name, title, email, phone, linkedin, profileImage, logo
           )}
         </div>
 
-        {/* Center: Profile image */}
-        <ProfileImage profileImage={profileImage} name={name} className="h-[54px] w-[54px]" />
+        <div className="cv-profile-large hidden">
+          <ProfileImage profileImage={profileImage} name={name} className="h-[34mm] w-[34mm]" />
+        </div>
+        <div className="cv-profile-small">
+          <ProfileImage profileImage={profileImage} name={name} className="h-[54px] w-[54px]" />
+        </div>
 
-        {/* Right: Contact info */}
         <div className="text-right text-[12px] leading-relaxed text-[var(--color-text-muted)]">
           {email && (
-            <p>
-              {email} <span className="text-[var(--color-text)]">&#8599;</span>
-            </p>
+            <ContactLink href={`mailto:${email}`}>
+              {email} <span className="cv-arrow text-[var(--color-text)]">&#8599;</span>
+            </ContactLink>
           )}
           {phone && (
-            <p>
-              {phone} <span className="text-[var(--color-text)]">&#8599;</span>
-            </p>
+            <ContactLink href={`tel:${phone.replace(/\s+/g, '')}`}>
+              {phone} <span className="cv-arrow text-[var(--color-text)]">&#8599;</span>
+            </ContactLink>
+          )}
+          {location && <p>{location}</p>}
+          {website && (
+            <ContactLink href={ensureExternalUrl(website)}>
+              {website} <span className="cv-arrow text-[var(--color-text)]">&#8599;</span>
+            </ContactLink>
           )}
           {linkedin && (
-            <p>
-              {linkedin} <span className="text-[var(--color-text)]">&#8599;</span>
-            </p>
+            <ContactLink href={ensureExternalUrl(linkedin)}>
+              {linkedin} <span className="cv-arrow text-[var(--color-text)]">&#8599;</span>
+            </ContactLink>
           )}
         </div>
       </div>
 
       {/* Mobile layout */}
-      <div className="flex flex-col md:hidden">
-        {/* Logo on mobile */}
+      <div className="flex flex-col md:hidden cv-mobile-layout px-4 py-6">
         {logo && (
           <Image
             src={logo}
@@ -105,24 +130,33 @@ export function Header({ name, title, email, phone, linkedin, profileImage, logo
         <div className="mt-3 flex items-center gap-3">
           <div className="text-[11px] leading-relaxed text-[var(--color-text-muted)]">
             {email && (
-              <p>
+              <ContactLink href={`mailto:${email}`}>
                 {email} <span className="text-[var(--color-text)]">&#8599;</span>
-              </p>
+              </ContactLink>
             )}
             {phone && (
-              <p>
+              <ContactLink href={`tel:${phone.replace(/\s+/g, '')}`}>
                 {phone} <span className="text-[var(--color-text)]">&#8599;</span>
-              </p>
+              </ContactLink>
+            )}
+            {location && <p>{location}</p>}
+            {website && (
+              <ContactLink href={ensureExternalUrl(website)}>
+                {website} <span className="text-[var(--color-text)]">&#8599;</span>
+              </ContactLink>
             )}
             {linkedin && (
-              <p>
+              <ContactLink href={ensureExternalUrl(linkedin)}>
                 {linkedin} <span className="text-[var(--color-text)]">&#8599;</span>
-              </p>
+              </ContactLink>
             )}
           </div>
           <ProfileImage profileImage={profileImage} name={name} className="h-[54px] w-[54px]" />
         </div>
       </div>
+
+      {/* Chevron separator (print-shell only) */}
+      <div className="hidden cv-chevron-sep cv-header-separator mt-2 mb-0" />
     </header>
   )
 }

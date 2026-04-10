@@ -26,7 +26,11 @@ export function ExperienceSection({ experience }: ExperienceSectionProps) {
           <article key={i} className="no-break">
             {/* Meta line */}
             <p className="mb-0.5 text-[12px] text-[var(--color-text-light)]">
-              {job.duration} &bull; {job.startDate} - {job.endDate} &bull;{' '}
+              {job.duration
+                ? `${job.duration} \u2022 `
+                : job.startDate
+                  ? `${job.startDate}${job.endDate ? ` - ${job.endDate}` : ''} \u2022 `
+                  : ''}
               {job.company}
             </p>
 

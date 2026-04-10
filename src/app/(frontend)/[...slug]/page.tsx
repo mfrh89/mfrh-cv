@@ -8,19 +8,36 @@ import { SiteFooter } from '@/components/site/SiteFooter'
 import { SiteHeader } from '@/components/site/SiteHeader'
 import { getPageBySlug, getSiteSettings } from '@/lib/payload'
 
-export async function generateMetadata(): Promise<Metadata> {
+type Props = {
+  params: Promise<{ slug: string[] }>
+}
+
+function resolveSlug(segments: string[]): string {
+  return segments.join('/')
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
   const { isEnabled: draft } = await draftMode()
-  const page = await getPageBySlug('home', { draft })
+  const page = await getPageBySlug(resolveSlug(slug), { draft })
+
+  if (!page) {
+    return { title: 'Seite nicht gefunden' }
+  }
+
   return {
-    title: page?.meta?.title || page?.title || 'Home',
-    description: page?.meta?.description || 'Portfolio',
+    title: page.meta?.title || page.title || 'Page',
+    description: page.meta?.description || undefined,
   }
 }
 
-export default async function HomePage() {
+export default async function DynamicPage({ params }: Props) {
+  const { slug } = await params
+  const resolvedSlug = resolveSlug(slug)
   const { isEnabled: draft } = await draftMode()
+
   const [page, siteSettings] = await Promise.all([
-    getPageBySlug('home', { draft }),
+    getPageBySlug(resolvedSlug, { draft }),
     getSiteSettings(),
   ])
 

@@ -1,0 +1,66 @@
+import { JetBrains_Mono } from 'next/font/google'
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: '--font-jetbrains-mono',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+})
+
+const css = `
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#e3e3e3;color:#3e3e3e;font-family:var(--font-jetbrains-mono),ui-monospace,monospace;font-size:9pt;line-height:1.35;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@page{size:A4;margin:0}
+.cv-print-page{width:210mm;margin:0 auto;background:#e3e3e3}
+.cv-print-header{display:flex;align-items:center;gap:12px;padding:8mm 8mm 0}
+.cv-print-name{font-size:20px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#3e3e3e;line-height:1.1;margin-bottom:6px}
+.cv-print-title{font-size:10px;letter-spacing:.03em;color:#717171}
+.cv-print-contact{margin-left:auto;text-align:right;font-size:9px;line-height:1.6;color:#717171}
+.cv-print-contact a{color:inherit;text-decoration:none}
+.cv-print-columns{display:flex;padding-top:16mm}
+.cv-print-sidebar{width:47%;padding:0 8mm 4mm;display:flex;flex-direction:column;gap:16px}
+.cv-print-main{width:53%;padding:0 8mm 4mm;display:flex;flex-direction:column}
+.cv-print-section-title{margin-bottom:8px}
+.cv-print-section-title h2{font-size:11px;font-weight:700;letter-spacing:-.05em;text-transform:uppercase;color:#3e3e3e}
+.cv-print-section-title .cv-print-accent{display:block;width:100%;height:1px;background:#3e3e3e;margin-top:3px}
+.cv-print-subsection h3{font-size:10px;font-weight:700;color:#3e3e3e;margin-bottom:4px}
+.cv-print-about p{font-size:9px;line-height:1.5;color:#717171}
+.cv-print-lang-row{display:flex;justify-content:space-between;font-size:9px;padding:2px 0}
+.cv-print-lang-name{color:#717171}
+.cv-print-lang-level{color:#717171}
+.cv-print-skill-row{display:flex;align-items:center;justify-content:space-between;gap:4px;padding:2px 0}
+.cv-print-skill-name{font-size:9px;color:#717171}
+.cv-print-dots{display:flex;gap:2px}
+.cv-print-dot{display:inline-block;width:7px;height:7px;border-radius:50%}
+.cv-print-dot-filled{background:#3e3e3e}
+.cv-print-dot-empty{background:#c4c4c4}
+.cv-print-experience{display:flex;flex-direction:column;gap:22px}
+.cv-print-job-meta{font-size:9px;color:#717171;margin-bottom:1px}
+.cv-print-job-role{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#3e3e3e;margin-bottom:4px}
+.cv-print-job-bullets{list-style:none;display:flex;flex-direction:column;gap:5px}
+.cv-print-job-bullets li{display:flex;gap:5px;font-size:9px;line-height:1.5;color:#717171}
+.cv-print-bullet-dot{flex-shrink:0;width:3px;height:3px;border-radius:50%;background:#717171;margin-top:5px}
+.cv-print-edu-item{margin-bottom:14px}
+.cv-print-edu-date{font-size:9px;color:#717171}
+.cv-print-edu-degree{font-size:10px;font-weight:700;text-transform:uppercase;color:#3e3e3e;margin-bottom:4px}
+.cv-print-edu-institution{font-size:9px;color:#717171}
+.cv-print-cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px}
+.cv-print-cert-date{font-size:8px;color:#717171}
+.cv-print-cert-name{font-size:10px;font-weight:700;color:#3e3e3e;margin-bottom:4px}
+.cv-print-cert-issuer{font-size:9px;color:#717171}
+`
+
+export const metadata = {
+  title: 'CV — Print',
+}
+
+export default function CVPrintLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="de" className={`${jetbrainsMono.variable}`}>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: css }} />
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}

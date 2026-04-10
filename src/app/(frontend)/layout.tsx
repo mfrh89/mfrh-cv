@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { JetBrains_Mono } from 'next/font/google'
+import { draftMode } from 'next/headers'
+import { DraftBanner } from '@/components/DraftBanner'
 import '../globals.css'
 
 const jetbrainsMono = JetBrains_Mono({
@@ -10,14 +12,22 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Maximilian Huber - CV',
-  description: 'Project Manager, Product Owner & Scrum Master with 10+ years of experience.',
+  title: {
+    default: 'Portfolio',
+    template: '%s | MFRH',
+  },
+  description: 'Portfolio mit CV, Projekten und individualisierten Anschreiben.',
 }
 
-export default function FrontendLayout({ children }: { children: React.ReactNode }) {
+export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
+  const { isEnabled: draft } = await draftMode()
+
   return (
     <html lang="de" className={`${jetbrainsMono.variable} antialiased`}>
-      <body className="min-h-screen bg-[#e3e3e3] font-mono">{children}</body>
+      <body>
+        {children}
+        {draft && <DraftBanner />}
+      </body>
     </html>
   )
 }

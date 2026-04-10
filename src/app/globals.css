@@ -1,25 +1,325 @@
 @import 'tailwindcss';
 
-:root {
-  --color-sidebar-bg: #e3e3e3;
-  --color-page-bg: #e3e3e3;
-  --color-text: #2d2d2d;
-  --color-text-muted: #555555;
-  --color-text-light: #888888;
-  --color-rule: #2d2d2d;
-  --color-dot-filled: #2d2d2d;
-  --color-dot-empty: #aaaaaa;
-}
-
 @theme inline {
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --color-surface: var(--surface);
+  --color-surface-low: var(--surface-low);
+  --color-surface-mid: var(--surface-mid);
+  --color-surface-high: var(--surface-high);
+  --color-surface-highest: var(--surface-highest);
+  --color-surface-lowest: var(--surface-lowest);
+  --color-primary: var(--primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary: var(--on-primary);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline-variant: var(--outline-variant);
+  --color-secondary: var(--secondary);
+  --color-tertiary: var(--tertiary);
 }
 
-body {
+/* ── Design System Tokens ─────────────────────────────── */
+
+.portfolio-shell {
+  --surface: #f9f9f9;
+  --surface-low: #f3f3f3;
+  --surface-mid: #eeeeee;
+  --surface-high: #e8e8e8;
+  --surface-highest: #e2e2e2;
+  --surface-lowest: #ffffff;
+  --primary: #141414;
+  --primary-container: #3b3b3b;
+  --on-primary: #ffffff;
+  --on-surface: #1a1a1a;
+  --on-surface-variant: #474747;
+  --outline-variant: #c4c4c4;
+  --secondary: #466270;
+  --tertiary: #273f49;
+  --status-success: #3d6652;
+  --status-error: #7a3535;
+  --status-warning: #7a6030;
+  --status-info: #2d4f6b;
+  --ghost-border: color-mix(in srgb, var(--outline-variant) 20%, transparent);
+  --shadow-float: 0 20px 50px rgba(0, 0, 0, 0.04);
+
+  /* CV-specific tokens (mapped) */
+  --color-sidebar-bg: var(--surface-low);
+  --color-page-bg: var(--surface);
+  --color-text: var(--on-surface);
+  --color-text-muted: var(--on-surface-variant);
+  --color-text-light: var(--outline-variant);
+  --color-rule: var(--on-surface);
+  --color-dot-filled: var(--on-surface);
+  --color-dot-empty: var(--outline-variant);
+
+  position: relative;
+  min-height: 100vh;
+  background: var(--surface);
+  color: var(--on-surface-variant);
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
-/* ── Print Styles ────────────────────────────────────────── */
+.portfolio-shell a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Dark Mode ────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  .portfolio-shell {
+    --surface: #111111;
+    --surface-low: #1a1a1a;
+    --surface-mid: #222222;
+    --surface-high: #2a2a2a;
+    --surface-highest: #323232;
+    --surface-lowest: #1c1c1c;
+    --primary: #f0f0f0;
+    --primary-container: #cccccc;
+    --on-primary: #141414;
+    --on-surface: #efefef;
+    --on-surface-variant: #8a8a8a;
+    --outline-variant: #3a3a3a;
+    --secondary: #6a8a9a;
+    --tertiary: #3d6070;
+    --status-success: #4d8068;
+    --status-error: #a04545;
+    --status-warning: #9a7a40;
+    --status-info: #3d6585;
+    --shadow-float: 0 20px 50px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* ── Typography Utilities ─────────────────────────────── */
+
+.display-lg { font-size: 3.5rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; color: var(--on-surface); }
+.display-md { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; color: var(--on-surface); }
+.display-sm { font-size: 2rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.2; color: var(--on-surface); }
+.title-lg   { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; color: var(--on-surface); }
+.title-md   { font-size: 1.25rem; font-weight: 600; line-height: 1.35; color: var(--on-surface); }
+.title-sm   { font-size: 1.0625rem; font-weight: 600; line-height: 1.4; color: var(--on-surface); }
+.body-lg    { font-size: 1rem; font-weight: 400; line-height: 1.6; color: var(--on-surface-variant); }
+.body-md    { font-size: 0.875rem; font-weight: 400; line-height: 1.5; color: var(--on-surface-variant); }
+.body-sm    { font-size: 0.8125rem; font-weight: 400; line-height: 1.5; color: var(--on-surface-variant); }
+.label-md   { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.05em; line-height: 1.4; text-transform: uppercase; color: var(--on-surface-variant); }
+.label-sm   { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.08em; line-height: 1.4; text-transform: uppercase; color: var(--on-surface-variant); }
+
+/* ── Button Utilities ─────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 12px;
+  background: var(--primary);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--on-primary);
+  transition: background 150ms;
+}
+.btn-primary:hover { background: var(--primary-container); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 12px;
+  background: var(--surface-mid);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  transition: background 150ms;
+}
+.btn-secondary:hover { background: var(--surface-high); }
+
+/* ── Component Styles ─────────────────────────────────── */
+
+.ghost-border {
+  border: 1px solid var(--ghost-border);
+}
+
+.section-card {
+  border-radius: 16px;
+  border: 1px solid var(--ghost-border);
+  background: var(--surface-lowest);
+  padding: 2rem 2.5rem;
+  box-shadow: var(--shadow-float);
+}
+
+.section-card-dark {
+  border-radius: 16px;
+  border: 1px solid var(--ghost-border);
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 2rem 2.5rem;
+  box-shadow: var(--shadow-float);
+}
+
+.detail-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 12px;
+  background: var(--surface-high);
+  padding: 0.5rem 0.9rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+}
+
+.glass-header {
+  background: var(--glass-bg, rgba(255, 255, 255, 0.7));
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--ghost-border);
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass-header {
+    --glass-bg: rgba(20, 20, 20, 0.85);
+  }
+}
+
+.cv-page,
+.cover-letter-page {
+  background: var(--surface-lowest);
+  border: 1px solid var(--outline-variant);
+  box-shadow: var(--shadow-float);
+}
+
+/* ── CV Print Shell (Figma-accurate tokens) ──────────── */
+
+.cv-print-shell {
+  --color-text: #3e3e3e !important;
+  --color-text-muted: #717171 !important;
+  --color-text-light: #c4c4c4 !important;
+  --color-rule: #3e3e3e !important;
+  --color-dot-filled: #3e3e3e !important;
+  --color-dot-empty: #c4c4c4 !important;
+  --cv-bg: #e3e3e3 !important;
+
+  background: var(--cv-bg) !important;
+  color: var(--color-text) !important;
+  min-height: 100vh;
+}
+
+.cv-print-shell .cv-page {
+  background: var(--cv-bg);
+  border: none;
+  box-shadow: none;
+  max-width: 100%;
+}
+
+.cv-print-shell .cv-section-rule {
+  width: 9mm;
+  height: 3px;
+}
+
+.cv-print-shell .cv-header-separator {
+  display: flex;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.cv-print-shell .cv-header-separator::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 80px solid transparent;
+  border-right: 80px solid transparent;
+  border-top: 16px solid var(--color-rule);
+}
+
+.cv-print-shell .cv-arrow {
+  display: none;
+}
+
+.cv-print-shell .cv-mobile-layout {
+  display: none !important;
+}
+
+.cv-print-shell .cv-desktop-layout {
+  display: flex !important;
+}
+
+.cv-print-shell .cv-profile-small {
+  display: none !important;
+}
+
+.cv-print-shell .cv-profile-large {
+  display: flex !important;
+}
+
+.cv-print-shell .cv-chevron-sep {
+  display: flex !important;
+}
+
+.cv-print-shell .cv-sidebar-col {
+  width: 47% !important;
+}
+
+.cv-print-shell .cv-main-col {
+  width: 53%;
+}
+
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--outline-variant) 1px, transparent 1px),
+    linear-gradient(90deg, var(--outline-variant) 1px, transparent 1px);
+  background-size: 36px 36px;
+  opacity: 0.3;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 92%);
+  pointer-events: none;
+}
+
+.project-card-fallback,
+.project-hero-fallback {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-low);
+}
+
+.project-card-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--outline-variant) 1px, transparent 1px),
+    linear-gradient(90deg, var(--outline-variant) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.3;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent);
+}
+
+/* ── Layout Utilities ─────────────────────────────────── */
+
+.page-container {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 2.5rem;
+}
+
+/* ── Animations ───────────────────────────────────────── */
+
+@keyframes floatPanel {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes orbitFloat {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.015) rotate(1.4deg); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── Print Styles ─────────────────────────────────────── */
 
 @media print {
   .print-hidden {
@@ -33,22 +333,23 @@ body {
 
   html,
   body {
-    background: white !important;
-    font-size: 10pt !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+
+  .cv-print-shell {
+    min-height: auto !important;
   }
 
   .cv-page,
   .cover-letter-page {
     width: 210mm !important;
-    min-height: 297mm !important;
-    max-height: 297mm !important;
+    min-height: auto !important;
+    max-height: none !important;
     margin: 0 !important;
-    box-shadow: none !important;
-    overflow: hidden !important;
-    page-break-after: always;
-    break-after: page;
+    overflow: visible !important;
+    page-break-after: auto;
+    break-after: auto;
   }
 
   .no-break {
