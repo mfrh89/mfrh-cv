@@ -79,7 +79,7 @@
     --primary-container: #cccccc;
     --on-primary: #141414;
     --on-surface: #efefef;
-    --on-surface-variant: #8a8a8a;
+    --on-surface-variant: #a0a0a0;
     --outline-variant: #3a3a3a;
     --secondary: #6a8a9a;
     --tertiary: #3d6070;
@@ -143,8 +143,14 @@
   border-radius: 16px;
   border: 1px solid var(--ghost-border);
   background: var(--surface-lowest);
-  padding: 2rem 2.5rem;
+  padding: 1.25rem 1rem;
   box-shadow: var(--shadow-float);
+}
+
+@media (min-width: 768px) {
+  .section-card {
+    padding: 2rem 2.5rem;
+  }
 }
 
 .section-card-dark {
@@ -294,12 +300,31 @@
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent);
 }
 
+/* ── CV Skill Grid ───────────────────────────────────── */
+
+.skill-grid {
+  display: grid;
+  gap: 4px;
+}
+
+@media (min-width: 640px) {
+  .skill-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* ── Layout Utilities ─────────────────────────────────── */
 
 .page-container {
   max-width: 1280px;
   margin-inline: auto;
-  padding-inline: 2.5rem;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 768px) {
+  .page-container {
+    padding-inline: 2.5rem;
+  }
 }
 
 /* ── Animations ───────────────────────────────────────── */

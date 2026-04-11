@@ -328,6 +328,8 @@ const CV: GlobalConfig = {
     },
   },
   fields: [
+    { name: 'pageTitle', type: 'text', label: 'Page Title (e.g. Curriculum Vitae)', defaultValue: 'Curriculum Vitae' },
+    { name: 'pageDescription', type: 'text', label: 'Page Description' },
     { name: 'name', type: 'text', label: 'Full Name', required: true },
     { name: 'title', type: 'text', label: 'Professional Title (subtitle)' },
     { name: 'email', type: 'text', label: 'Email' },

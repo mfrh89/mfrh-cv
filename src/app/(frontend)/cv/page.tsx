@@ -24,8 +24,8 @@ export default async function CVPage() {
       <main className="page-container py-8 pb-20 md:pb-8">
         <div className="mx-auto mb-8 flex w-full max-w-[760px] items-end justify-between gap-4">
           <div>
-            <p className="label-sm">Curriculum Vitae</p>
-            <p className="mt-2 body-md">Webansicht. Druck-PDF via Button oben rechts.</p>
+            <h1 className="display-sm uppercase tracking-[0.05em]">{cv.pageTitle || 'Curriculum Vitae'}</h1>
+            {(cv.pageDescription) && <p className="mt-2 body-md">{cv.pageDescription}</p>}
           </div>
         </div>
 

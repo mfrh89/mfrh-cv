@@ -825,6 +825,8 @@ export interface SiteSetting {
  */
 export interface Cv {
   id: number;
+  pageTitle?: string | null;
+  pageDescription?: string | null;
   name: string;
   title?: string | null;
   email?: string | null;
@@ -919,6 +921,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  * via the `definition` "cv_select".
  */
 export interface CvSelect<T extends boolean = true> {
+  pageTitle?: T;
+  pageDescription?: T;
   name?: T;
   title?: T;
   email?: T;

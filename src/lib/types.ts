@@ -13,6 +13,8 @@ export type CVEntry = {
 }
 
 export interface CVData {
+  pageTitle?: string | null
+  pageDescription?: string | null
   name?: string | null
   title?: string | null
   email?: string | null

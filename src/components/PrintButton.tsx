@@ -31,7 +31,7 @@ export function PrintButton() {
       <button
         onClick={handleClick}
         disabled={loading}
-        className="print-hidden fixed right-6 bottom-20 md:bottom-6 z-50 flex items-center gap-2 rounded-full bg-[var(--primary)] px-5 py-3 text-xs font-bold tracking-wider text-[var(--on-primary)] shadow-lg transition-transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:hover:scale-100"
+        className="print-hidden fixed right-4 bottom-[calc(env(safe-area-inset-bottom,0px)+24px)] z-50 flex items-center gap-2 rounded-full bg-[var(--primary)] px-5 py-3 text-xs font-bold tracking-wider text-[var(--on-primary)] shadow-lg transition-transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:hover:scale-100"
       >
         {loading && (
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" style={{ animation: 'cv-spin 1s linear infinite' }}>

@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "coolify": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@masonator/coolify-mcp"],
+      "env": {
+        "COOLIFY_API_URL": "https://coolify.mfrh.xyz",
+        "COOLIFY_API_TOKEN": "5|9C3ihL2d7dokJssBhTsMgjb3XVnbP0bHPADFxVB704c3c92a"
+      }
+    }
+  }
+}

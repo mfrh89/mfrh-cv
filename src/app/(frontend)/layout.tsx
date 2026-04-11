@@ -11,6 +11,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
+export const viewport = {
+  viewportFit: 'cover' as const,
+}
+
 export const metadata: Metadata = {
   title: {
     default: 'Portfolio',

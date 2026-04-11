@@ -1,13 +1,43 @@
 import Image from 'next/image'
 import { SkillDots } from './SkillDots'
 import { getMediaProps } from '@/lib/media'
-import type { CVData } from '@/lib/types'
+import type { CVData, CVEntry } from '@/lib/types'
+
+const MONTH_MAP: Record<string, number> = {
+  januar: 0, february: 1, februar: 1, march: 2, märz: 2, april: 3,
+  mai: 4, may: 4, juni: 5, june: 5, juli: 6, july: 6, august: 7,
+  september: 8, oktober: 9, october: 9, november: 10, dezember: 11, december: 11,
+}
+
+function parseMonthYear(value: string): Date | null {
+  const parts = value.trim().toLowerCase().split(/\s+/)
+  if (parts.length < 2) return null
+  const month = MONTH_MAP[parts[0]]
+  const year = parseInt(parts[1], 10)
+  if (month == null || isNaN(year)) return null
+  return new Date(year, month)
+}
+
+function calcDuration(entry: CVEntry): string | null {
+  if (!entry.startDate) return null
+  const start = parseMonthYear(entry.startDate)
+  if (!start) return null
+  const end = entry.endDate?.toLowerCase() === 'heute' || entry.endDate?.toLowerCase() === 'present'
+    ? new Date()
+    : entry.endDate ? parseMonthYear(entry.endDate) : new Date()
+  if (!end) return null
+  const totalMonths = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth())
+  const years = Math.floor(totalMonths / 12)
+  const months = totalMonths % 12
+  if (years > 0 && months > 0) return `${years} ${years === 1 ? 'Jahr' : 'Jahre'}, ${months} ${months === 1 ? 'Monat' : 'Monate'}`
+  if (years > 0) return `${years} ${years === 1 ? 'Jahr' : 'Jahre'}`
+  return `${months} ${months === 1 ? 'Monat' : 'Monate'}`
+}
 
 function WebSectionTitle({ children, id }: { children: React.ReactNode; id?: string }) {
   return (
     <div className="mb-6" id={id}>
-      <h2 className="display-sm">{children}</h2>
-      <div className="mt-3 h-[2px] w-16 bg-[var(--primary)]" />
+      <h2 className="title-md uppercase tracking-[0.05em] pb-3" style={{ borderBottom: '1px solid var(--on-surface)' }}>{children}</h2>
     </div>
   )
 }
@@ -59,7 +89,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
                 />
               )}
             </div>
-            <h1 className="display-md">{cv.name}</h1>
+            <h1 className="title-lg uppercase tracking-[0.05em]">{cv.name}</h1>
             {cv.title && <p className="mt-2 title-sm text-[var(--on-surface-variant)]">{cv.title}</p>}
             {cv.summary && <p className="mt-4 body-md max-w-2xl">{cv.summary}</p>}
           </div>
@@ -115,8 +145,8 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
               href={cv.linkedin.startsWith('http') ? cv.linkedin : `https://${cv.linkedin}`}
               label={cv.linkedin}
               icon={
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.066a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L4.34 8.284" />
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                 </svg>
               }
             />
@@ -129,15 +159,21 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
         <section>
           <WebSectionTitle id="experience">Berufserfahrung</WebSectionTitle>
           <div className="space-y-4">
-            {cv.experience!.map((job, i) => (
+            {cv.experience!.map((job, i) => {
+              const duration = calcDuration(job) || job.duration
+              const dateRange = job.startDate ? `${job.startDate}${job.endDate ? ` – ${job.endDate}` : ''}` : null
+              return (
               <div key={job.id || i} className="section-card">
-                <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div className="space-y-1.5">
+                  <div className="flex items-baseline justify-between gap-4">
+                    {dateRange && <p className="label-sm text-[var(--on-surface-variant)]">{dateRange}</p>}
+                    {duration && (
+                      <span className="shrink-0 label-sm text-[var(--on-surface-variant)]">{duration}</span>
+                    )}
+                  </div>
                   <h3 className="title-sm">{job.role}</h3>
-                  <span className="label-sm">
-                    {job.duration || (job.startDate ? `${job.startDate}${job.endDate ? ` - ${job.endDate}` : ''}` : '')}
-                  </span>
+                  {job.company && <p className="label-sm !text-[var(--primary)]">{job.company}</p>}
                 </div>
-                {job.company && <p className="mt-1 label-sm !text-[var(--primary)]">{job.company}</p>}
                 {job.description && (
                   <ul className="mt-4 space-y-2">
                     {job.description.split('\n').map((point, j) => {
@@ -153,7 +189,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
                   </ul>
                 )}
               </div>
-            ))}
+            )})}
           </div>
         </section>
       )}
@@ -166,7 +202,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
           {cv.languages && cv.languages.length > 0 && (
             <div className="section-card mb-4">
               <h3 className="title-sm mb-4">Sprachen</h3>
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="skill-grid">
                 {cv.languages.map((lang, i) => (
                   <div key={i} className="flex items-center justify-between">
                     <span className="body-md">{lang.name}</span>
@@ -179,7 +215,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
 
           <div className="section-card">
             <h3 className="title-sm mb-4">Tech & Software</h3>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="skill-grid">
               {cv.skills!.map((skill, i) => (
                 <div key={i} className="flex items-center justify-between gap-3">
                   <span className="body-md">{skill.name}</span>
@@ -198,13 +234,15 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
           <div className="space-y-4">
             {cv.education!.map((edu, i) => (
               <div key={i} className="section-card">
-                <h3 className="title-sm">{edu.degree}</h3>
-                <p className="mt-1 body-md">{edu.institution}</p>
-                {(edu.startDate || edu.endDate) && (
-                  <p className="mt-2 label-sm">
-                    {edu.startDate}{edu.endDate ? ` - ${edu.endDate}` : ''}
-                  </p>
-                )}
+                <div className="space-y-1.5">
+                  {(edu.startDate || edu.endDate) && (
+                    <p className="label-sm text-[var(--on-surface-variant)]">
+                      {edu.startDate}{edu.endDate ? ` – ${edu.endDate}` : ''}
+                    </p>
+                  )}
+                  <h3 className="title-sm">{edu.degree}</h3>
+                  <p className="label-sm !text-[var(--primary)]">{edu.institution}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -218,13 +256,15 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
           <div className="grid gap-4 sm:grid-cols-2">
             {cv.certificates!.map((cert, i) => (
               <div key={i} className="section-card">
-                <h3 className="title-sm">{cert.name}</h3>
-                <p className="mt-1 body-md">{cert.issuer}</p>
-                {(cert.date || cert.status) && (
-                  <p className="mt-2 label-sm">
-                    {cert.date}{cert.status ? ` (${cert.status})` : ''}
-                  </p>
-                )}
+                <div className="space-y-1.5">
+                  {(cert.date || cert.status) && (
+                    <p className="label-sm text-[var(--on-surface-variant)]">
+                      {cert.date}{cert.status ? ` (${cert.status})` : ''}
+                    </p>
+                  )}
+                  <h3 className="title-sm">{cert.name}</h3>
+                  <p className="label-sm !text-[var(--primary)]">{cert.issuer}</p>
+                </div>
               </div>
             ))}
           </div>
