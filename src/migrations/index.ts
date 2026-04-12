@@ -2,6 +2,7 @@ import * as migration_20260410_181404_init_schema from './20260410_181404_init_s
 import * as migration_20260411_100147 from './20260411_100147';
 import * as migration_20260411_214333 from './20260411_214333';
 import * as migration_20260412_120000_openrouter_settings from './20260412_120000_openrouter_settings';
+import * as migration_20260412_123355 from './20260412_123355';
 
 export const migrations = [
   {
@@ -23,5 +24,10 @@ export const migrations = [
     up: migration_20260412_120000_openrouter_settings.up,
     down: migration_20260412_120000_openrouter_settings.down,
     name: '20260412_120000_openrouter_settings',
+  },
+  {
+    up: migration_20260412_123355.up,
+    down: migration_20260412_123355.down,
+    name: '20260412_123355'
   },
 ];
