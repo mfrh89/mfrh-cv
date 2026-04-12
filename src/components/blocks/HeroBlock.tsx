@@ -1,7 +1,9 @@
 import Image from 'next/image'
 import type { PageBlock } from '@/lib/payload'
-import { getMediaProps } from '@/lib/payload'
+import { getMediaProps, hasRichText } from '@/lib/payload'
+import { resolveCTAHref } from '@/lib/utils'
 import { BlockCTA } from './BlockCTA'
+import { InlineRichText } from './InlineRichText'
 
 type HeroData = Extract<PageBlock, { blockType: 'hero' }>
 
@@ -15,16 +17,23 @@ export function HeroBlock({ block }: { block: HeroData }) {
         <div className="relative z-10 max-w-4xl">
           {block.eyebrow && <p className="label-sm">{block.eyebrow}</p>}
           <h1 className="mt-6 display-lg">{block.headline}</h1>
-          {block.intro && <p className="mt-6 max-w-2xl body-lg">{block.intro}</p>}
+          {hasRichText(block.intro) && (
+            <div className="mt-6 max-w-2xl body-lg">
+              <InlineRichText data={block.intro} />
+            </div>
+          )}
 
           {(block.cta?.label || block.secondaryCTA?.label) && (
             <div className="mt-8 flex flex-wrap gap-3">
               <BlockCTA cta={block.cta} />
-              {block.secondaryCTA?.label && block.secondaryCTA?.href && (
-                <a href={block.secondaryCTA.href} className="btn-secondary">
-                  {block.secondaryCTA.label}
-                </a>
-              )}
+              {block.secondaryCTA?.label && (() => {
+                const href = resolveCTAHref(block.secondaryCTA)
+                return href ? (
+                  <a href={href} className="btn-secondary">
+                    {block.secondaryCTA!.label}
+                  </a>
+                ) : null
+              })()}
             </div>
           )}
         </div>

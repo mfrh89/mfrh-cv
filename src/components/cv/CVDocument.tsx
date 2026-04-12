@@ -2,11 +2,12 @@ import { Header } from '@/components/Header'
 import { AboutSection, SkillsSection } from '@/components/cv/Sidebar'
 import { ExperienceSection } from '@/components/cv/ExperienceSection'
 import { getMediaProps } from '@/lib/media'
+import { richTextToPlain } from '@/lib/utils'
 import type { CVData } from '@/lib/types'
 
 function mapSidebarData(cv: CVData) {
   return {
-    summary: cv.summary || '',
+    summary: richTextToPlain(cv.summary),
     skillMaxDots: cv.skillMaxDots ?? 5,
     skills: (cv.skills || []).map((skill) => ({ name: skill.name || '', level: skill.level ?? 0 })),
     languages: (cv.languages || []).map((language) => ({ name: language.name || '', level: language.level || '' })),
@@ -46,7 +47,7 @@ export function CVDocument({ cv, serverURL }: { cv: CVData; serverURL: string })
 
       {/* Mobile only (hidden in cv-print-shell) */}
       <div className="flex flex-col px-4 pb-6 pt-5 md:hidden cv-mobile-layout">
-        <AboutSection summary={cv.summary || ''} />
+        <AboutSection summary={sidebarData.summary} />
         <div className="mt-5">
           <ExperienceSection experience={cv.experience || []} />
         </div>
@@ -58,7 +59,7 @@ export function CVDocument({ cv, serverURL }: { cv: CVData; serverURL: string })
       {/* Desktop + Print-shell: 2-column */}
       <div className="hidden flex-1 md:flex cv-desktop-layout">
         <div className="cv-sidebar-col flex w-[36%] shrink-0 flex-col space-y-5 px-[9mm] pb-6 pt-5">
-          <AboutSection summary={cv.summary || ''} />
+          <AboutSection summary={sidebarData.summary} />
           <SkillsSection data={sidebarData} />
         </div>
         <div className="cv-main-col flex flex-1 flex-col px-[9mm] pb-6 pt-5">

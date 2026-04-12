@@ -1,5 +1,7 @@
 import type { PageBlock } from '@/lib/payload'
+import { hasRichText } from '@/lib/payload'
 import { BlockCTA } from './BlockCTA'
+import { InlineRichText } from './InlineRichText'
 
 type QuoteData = Extract<PageBlock, { blockType: 'quote' }>
 
@@ -7,9 +9,11 @@ export function QuoteBlock({ block }: { block: QuoteData }) {
   return (
     <section className="page-container py-8 md:py-14">
       <div className="section-card">
-        <blockquote className="max-w-4xl title-lg leading-[1.3]">
-          &ldquo;{block.quote}&rdquo;
-        </blockquote>
+        {hasRichText(block.quote) && (
+          <blockquote className="max-w-4xl title-lg leading-[1.3]">
+            <InlineRichText data={block.quote} />
+          </blockquote>
+        )}
         {(block.attribution || block.context) && (
           <p className="mt-5 label-sm">
             {[block.attribution, block.context].filter(Boolean).join(' \u2022 ')}

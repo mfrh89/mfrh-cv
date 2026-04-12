@@ -38,9 +38,19 @@ function aiField(hint?: string) {
   return { afterInput: [component] }
 }
 
-const ctaFields: Field[] = [
-  { name: 'label', type: 'text', required: true },
-  { name: 'href', type: 'text', required: true },
+const ctaLinkFields: Field[] = [
+  { name: 'label', type: 'text' },
+  {
+    name: 'linkType',
+    type: 'select',
+    defaultValue: 'external',
+    options: [
+      { label: 'Internal page', value: 'internal' },
+      { label: 'External link', value: 'external' },
+    ],
+  },
+  { name: 'page', type: 'relationship', relationTo: 'pages' as any, admin: { condition: (_data, siblingData) => siblingData?.linkType === 'internal' } },
+  { name: 'href', type: 'text', label: 'URL', admin: { condition: (_data, siblingData) => siblingData?.linkType === 'external' } },
 ]
 
 const optionalCTA: Field = {
@@ -49,8 +59,7 @@ const optionalCTA: Field = {
   label: 'Call to Action (optional)',
   admin: { condition: () => true },
   fields: [
-    { name: 'label', type: 'text' },
-    { name: 'href', type: 'text' },
+    ...ctaLinkFields,
     {
       name: 'style',
       type: 'select',
@@ -71,17 +80,14 @@ const pageBlocks: Block[] = [
     fields: [
       { name: 'eyebrow', type: 'text' },
       { name: 'headline', type: 'text', required: true },
-      { name: 'intro', type: 'textarea', admin: { components: aiField('Short introductory paragraph, 2-3 sentences, for a hero section') } },
+      { name: 'intro', type: 'richText', admin: { components: aiField('Short introductory paragraph, 2-3 sentences, for a hero section') } },
       { name: 'media', type: 'upload', relationTo: 'media', label: 'Hero Image' },
       optionalCTA,
       {
         name: 'secondaryCTA',
         type: 'group',
         label: 'Secondary CTA (optional)',
-        fields: [
-          { name: 'label', type: 'text' },
-          { name: 'href', type: 'text' },
-        ],
+        fields: ctaLinkFields,
       },
     ],
   },
@@ -91,7 +97,7 @@ const pageBlocks: Block[] = [
     fields: [
       { name: 'eyebrow', type: 'text' },
       { name: 'title', type: 'text', required: true },
-      { name: 'body', type: 'textarea', required: true, admin: { components: aiField('Body text for a content section, 1-2 paragraphs') } },
+      { name: 'body', type: 'richText', admin: { components: aiField('Body text for a content section, 1-2 paragraphs') } },
       {
         name: 'mediaType',
         type: 'select',
@@ -132,7 +138,7 @@ const pageBlocks: Block[] = [
     slug: 'quote',
     labels: { singular: 'Quote', plural: 'Quotes' },
     fields: [
-      { name: 'quote', type: 'textarea', required: true, admin: { components: aiField('An impactful quote or testimonial, 1-2 sentences') } },
+      { name: 'quote', type: 'richText', admin: { components: aiField('An impactful quote or testimonial, 1-2 sentences') } },
       { name: 'attribution', type: 'text' },
       { name: 'context', type: 'text' },
       optionalCTA,
@@ -171,7 +177,7 @@ const projectSectionBlocks: Block[] = [
     fields: [
       { name: 'eyebrow', type: 'text' },
       { name: 'title', type: 'text', required: true },
-      { name: 'body', type: 'textarea', required: true, admin: { components: aiField('Descriptive paragraph for a project section') } },
+      { name: 'body', type: 'richText', admin: { components: aiField('Descriptive paragraph for a project section') } },
     ],
   },
   {
@@ -180,7 +186,7 @@ const projectSectionBlocks: Block[] = [
     fields: [
       { name: 'eyebrow', type: 'text' },
       { name: 'title', type: 'text', required: true },
-      { name: 'body', type: 'textarea', required: true, admin: { components: aiField('Descriptive paragraph accompanying a media highlight') } },
+      { name: 'body', type: 'richText', admin: { components: aiField('Descriptive paragraph accompanying a media highlight') } },
       {
         name: 'layout',
         type: 'select',
@@ -216,7 +222,7 @@ const projectSectionBlocks: Block[] = [
     slug: 'quote',
     labels: { singular: 'Quote', plural: 'Quotes' },
     fields: [
-      { name: 'quote', type: 'textarea', required: true, admin: { components: aiField('An impactful quote or testimonial, 1-2 sentences') } },
+      { name: 'quote', type: 'richText', admin: { components: aiField('An impactful quote or testimonial, 1-2 sentences') } },
       { name: 'attribution', type: 'text' },
       { name: 'context', type: 'text' },
     ],
@@ -404,7 +410,7 @@ const CV: GlobalConfig = {
     { name: 'linkedin', type: 'text', label: 'LinkedIn (e.g. linkedin.com/in/mfrh)' },
     { name: 'profileImage', type: 'upload', relationTo: 'media', label: 'Profile Photo' },
     { name: 'logo', type: 'upload', relationTo: 'media', label: 'Logo' },
-    { name: 'summary', type: 'textarea', label: 'About Me (Über Mich)', admin: { components: aiField('Professional summary/bio, 3-4 sentences, first person') } },
+    { name: 'summary', type: 'richText', label: 'About Me (Über Mich)', admin: { components: aiField('Professional summary/bio, 3-4 sentences, first person') } },
     {
       name: 'experience',
       type: 'array',
@@ -520,11 +526,21 @@ const Projects: CollectionConfig = {
       type: 'array',
       fields: [
         { name: 'label', type: 'text', required: true },
-        { name: 'url', type: 'text', required: true },
+        {
+          name: 'linkType',
+          type: 'select',
+          defaultValue: 'external',
+          options: [
+            { label: 'Internal page', value: 'internal' },
+            { label: 'External link', value: 'external' },
+          ],
+        },
+        { name: 'page', type: 'relationship', relationTo: 'pages' as any, admin: { condition: (_data, siblingData) => siblingData?.linkType === 'internal' } },
+        { name: 'url', type: 'text', label: 'URL', admin: { condition: (_data, siblingData) => siblingData?.linkType === 'external' } },
       ],
     },
-    { name: 'challenge', type: 'textarea', admin: { components: aiField('The problem or challenge this project addressed, 2-3 sentences') } },
-    { name: 'solution', type: 'textarea', admin: { components: aiField('How the challenge was solved, highlighting approach and technology, 2-3 sentences') } },
+    { name: 'challenge', type: 'richText', admin: { components: aiField('The problem or challenge this project addressed, 2-3 sentences') } },
+    { name: 'solution', type: 'richText', admin: { components: aiField('How the challenge was solved, highlighting approach and technology, 2-3 sentences') } },
     {
       name: 'metrics',
       type: 'array',

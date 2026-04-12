@@ -3,14 +3,59 @@
 import { useState } from 'react'
 import { useField, useAllFormFields } from '@payloadcms/ui'
 
+function richTextToPlain(data: any): string {
+  if (!data?.root?.children) return ''
+  return data.root.children
+    .map((node: any) => {
+      if (!node.children) return ''
+      return node.children.map((child: any) => child.text || '').join('')
+    })
+    .filter(Boolean)
+    .join('\n\n')
+}
+
+function plainToRichText(text: string) {
+  const paragraphs = text.split(/\n\n+/).filter((p) => p.trim())
+  return {
+    root: {
+      type: 'root',
+      format: '',
+      indent: 0,
+      version: 1,
+      children: paragraphs.map((p) => ({
+        type: 'paragraph',
+        format: '',
+        indent: 0,
+        version: 1,
+        children: [
+          {
+            type: 'text',
+            text: p.trim(),
+            format: 0,
+            mode: 'normal',
+            style: '',
+            detail: 0,
+            version: 1,
+          },
+        ],
+        direction: 'ltr',
+        textFormat: 0,
+        textStyle: '',
+      })),
+      direction: 'ltr',
+    },
+  }
+}
+
 export default function AIGenerate({ hint }: { hint?: string }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const { value, setValue, path } = useField<string>({ path: '' })
+  const { value, setValue, path } = useField<any>({ path: '' })
   const [fields] = useAllFormFields()
 
   const fieldName = path.split('.').pop() || path
+  const isRichText = typeof value === 'object' && value !== null && value?.root != null
 
   const handleGenerate = async (mode: 'generate' | 'rewrite') => {
     setLoading(true)
@@ -21,9 +66,18 @@ export default function AIGenerate({ hint }: { hint?: string }) {
     for (const [key, field] of Object.entries(fields)) {
       if (key !== path && field?.value != null && field.value !== '') {
         const label = key.split('.').pop() || key
-        context[label] = field.value
+        // Extract plain text from richText field values in context
+        const v = field.value as any
+        if (typeof v === 'object' && v?.root != null) {
+          const text = richTextToPlain(v as any)
+          if (text) context[label] = text
+        } else {
+          context[label] = v
+        }
       }
     }
+
+    const currentText = isRichText ? richTextToPlain(value) : (typeof value === 'string' ? value : '')
 
     try {
       const res = await fetch('/api/generate-text', {
@@ -32,7 +86,7 @@ export default function AIGenerate({ hint }: { hint?: string }) {
         credentials: 'include',
         body: JSON.stringify({
           fieldName,
-          currentValue: mode === 'rewrite' ? value : undefined,
+          currentValue: mode === 'rewrite' ? currentText : undefined,
           context,
           hint,
         }),
@@ -46,7 +100,11 @@ export default function AIGenerate({ hint }: { hint?: string }) {
       }
 
       if (data.text) {
-        setValue(data.text)
+        if (isRichText) {
+          setValue(plainToRichText(data.text))
+        } else {
+          setValue(data.text)
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Network error')
@@ -55,7 +113,9 @@ export default function AIGenerate({ hint }: { hint?: string }) {
     }
   }
 
-  const hasValue = typeof value === 'string' && value.trim().length > 0
+  const hasValue = isRichText
+    ? Boolean(value?.root?.children?.some((n: any) => n.children?.some((c: any) => c.text?.trim())))
+    : typeof value === 'string' && value.trim().length > 0
 
   return (
     <div

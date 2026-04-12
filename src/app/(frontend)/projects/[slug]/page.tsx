@@ -8,7 +8,8 @@ import { notFound } from 'next/navigation'
 import { ProjectSections } from '@/components/site/ProjectSections'
 import { SiteFooter } from '@/components/site/SiteFooter'
 import { SiteHeader } from '@/components/site/SiteHeader'
-import { getMediaProps, getProjectBySlug, getSiteSettings } from '@/lib/payload'
+import { InlineRichText } from '@/components/blocks/InlineRichText'
+import { getMediaProps, getProjectBySlug, getSiteSettings, hasRichText } from '@/lib/payload'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return { title: 'Projekt nicht gefunden' }
   return {
     title: project.title || 'Projekt',
-    description: project.excerpt || project.challenge || 'Projekt-Detailseite',
+    description: project.excerpt || 'Projekt-Detailseite',
   }
 }
 
@@ -63,13 +64,18 @@ export default async function ProjectDetailPage({ params }: Props) {
 
               {!!project.links?.length && (
                 <div className="mt-8 flex flex-wrap gap-3">
-                  {project.links.map((link, i) => (
-                    link.url ? (
-                      <a key={`${link.url}-${i}`} href={link.url} target="_blank" rel="noreferrer" className="btn-primary">
+                  {project.links.map((link, i) => {
+                    const isInternal = link.linkType === 'internal'
+                    const href = isInternal
+                      ? (typeof link.page === 'object' && link.page?.slug ? (link.page.slug === 'home' ? '/' : `/${link.page.slug}`) : null)
+                      : link.url
+                    if (!href) return null
+                    return (
+                      <a key={`${href}-${i}`} href={href} {...(!isInternal && { target: '_blank', rel: 'noreferrer' })} className="btn-primary">
                         {link.label || 'Open link'}
                       </a>
-                    ) : null
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -92,19 +98,19 @@ export default async function ProjectDetailPage({ params }: Props) {
           </div>
         </section>
 
-        {(project.challenge || project.solution || project.metrics?.length) && (
+        {(hasRichText(project.challenge) || hasRichText(project.solution) || project.metrics?.length) && (
           <section className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="section-card">
-              {project.challenge && (
+              {hasRichText(project.challenge) && (
                 <>
                   <p className="label-sm">Challenge</p>
-                  <p className="mt-4 body-lg">{project.challenge}</p>
+                  <InlineRichText data={project.challenge} className="mt-4 body-lg" />
                 </>
               )}
-              {project.solution && (
+              {hasRichText(project.solution) && (
                 <>
                   <p className="mt-8 label-sm">Solution</p>
-                  <p className="mt-4 body-lg">{project.solution}</p>
+                  <InlineRichText data={project.solution} className="mt-4 body-lg" />
                 </>
               )}
             </div>
