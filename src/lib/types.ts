@@ -51,8 +51,17 @@ export interface SiteSettingsData {
 
 export interface CTAData {
   label?: string | null
+  linkType?: 'internal' | 'external' | null
+  page?: { slug?: string | null } | number | null
   href?: string | null
   style?: 'primary' | 'secondary' | null
+}
+
+export interface CTALinkData {
+  label?: string | null
+  linkType?: 'internal' | 'external' | null
+  page?: { slug?: string | null } | number | null
+  href?: string | null
 }
 
 export type PageBlock =
@@ -64,7 +73,7 @@ export type PageBlock =
       intro?: string | null
       media?: MediaAsset
       cta?: CTAData | null
-      secondaryCTA?: { label?: string | null; href?: string | null } | null
+      secondaryCTA?: CTALinkData | null
     }
   | {
       blockType: 'textMedia'
@@ -159,7 +168,7 @@ export interface ProjectData {
   excerpt?: string | null
   coverImage?: MediaAsset
   tags?: { label?: string | null }[] | null
-  links?: { label?: string | null; url?: string | null }[] | null
+  links?: { label?: string | null; linkType?: 'internal' | 'external' | null; page?: { slug?: string | null } | number | null; url?: string | null }[] | null
   challenge?: string | null
   solution?: string | null
   metrics?: { value?: string | null; label?: string | null }[] | null

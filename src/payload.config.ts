@@ -38,9 +38,19 @@ function aiField(hint?: string) {
   return { afterInput: [component] }
 }
 
-const ctaFields: Field[] = [
-  { name: 'label', type: 'text', required: true },
-  { name: 'href', type: 'text', required: true },
+const ctaLinkFields: Field[] = [
+  { name: 'label', type: 'text' },
+  {
+    name: 'linkType',
+    type: 'select',
+    defaultValue: 'external',
+    options: [
+      { label: 'Internal page', value: 'internal' },
+      { label: 'External link', value: 'external' },
+    ],
+  },
+  { name: 'page', type: 'relationship', relationTo: 'pages' as any, admin: { condition: (_data, siblingData) => siblingData?.linkType === 'internal' } },
+  { name: 'href', type: 'text', label: 'URL', admin: { condition: (_data, siblingData) => siblingData?.linkType === 'external' } },
 ]
 
 const optionalCTA: Field = {
@@ -49,8 +59,7 @@ const optionalCTA: Field = {
   label: 'Call to Action (optional)',
   admin: { condition: () => true },
   fields: [
-    { name: 'label', type: 'text' },
-    { name: 'href', type: 'text' },
+    ...ctaLinkFields,
     {
       name: 'style',
       type: 'select',
@@ -78,10 +87,7 @@ const pageBlocks: Block[] = [
         name: 'secondaryCTA',
         type: 'group',
         label: 'Secondary CTA (optional)',
-        fields: [
-          { name: 'label', type: 'text' },
-          { name: 'href', type: 'text' },
-        ],
+        fields: ctaLinkFields,
       },
     ],
   },
@@ -520,7 +526,17 @@ const Projects: CollectionConfig = {
       type: 'array',
       fields: [
         { name: 'label', type: 'text', required: true },
-        { name: 'url', type: 'text', required: true },
+        {
+          name: 'linkType',
+          type: 'select',
+          defaultValue: 'external',
+          options: [
+            { label: 'Internal page', value: 'internal' },
+            { label: 'External link', value: 'external' },
+          ],
+        },
+        { name: 'page', type: 'relationship', relationTo: 'pages' as any, admin: { condition: (_data, siblingData) => siblingData?.linkType === 'internal' } },
+        { name: 'url', type: 'text', label: 'URL', admin: { condition: (_data, siblingData) => siblingData?.linkType === 'external' } },
       ],
     },
     { name: 'challenge', type: 'textarea', admin: { components: aiField('The problem or challenge this project addressed, 2-3 sentences') } },

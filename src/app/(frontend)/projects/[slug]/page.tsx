@@ -63,13 +63,18 @@ export default async function ProjectDetailPage({ params }: Props) {
 
               {!!project.links?.length && (
                 <div className="mt-8 flex flex-wrap gap-3">
-                  {project.links.map((link, i) => (
-                    link.url ? (
-                      <a key={`${link.url}-${i}`} href={link.url} target="_blank" rel="noreferrer" className="btn-primary">
+                  {project.links.map((link, i) => {
+                    const isInternal = link.linkType === 'internal'
+                    const href = isInternal
+                      ? (typeof link.page === 'object' && link.page?.slug ? (link.page.slug === 'home' ? '/' : `/${link.page.slug}`) : null)
+                      : link.url
+                    if (!href) return null
+                    return (
+                      <a key={`${href}-${i}`} href={href} {...(!isInternal && { target: '_blank', rel: 'noreferrer' })} className="btn-primary">
                         {link.label || 'Open link'}
                       </a>
-                    ) : null
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>

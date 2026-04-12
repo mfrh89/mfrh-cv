@@ -170,11 +170,15 @@ export interface Page {
             media?: (number | null) | Media;
             cta?: {
               label?: string | null;
+              linkType?: ('internal' | 'external') | null;
+              page?: (number | null) | Page;
               href?: string | null;
               style?: ('primary' | 'secondary') | null;
             };
             secondaryCTA?: {
               label?: string | null;
+              linkType?: ('internal' | 'external') | null;
+              page?: (number | null) | Page;
               href?: string | null;
             };
             id?: string | null;
@@ -193,6 +197,8 @@ export interface Page {
             caption?: string | null;
             cta?: {
               label?: string | null;
+              linkType?: ('internal' | 'external') | null;
+              page?: (number | null) | Page;
               href?: string | null;
               style?: ('primary' | 'secondary') | null;
             };
@@ -206,6 +212,8 @@ export interface Page {
             context?: string | null;
             cta?: {
               label?: string | null;
+              linkType?: ('internal' | 'external') | null;
+              page?: (number | null) | Page;
               href?: string | null;
               style?: ('primary' | 'secondary') | null;
             };
@@ -298,7 +306,9 @@ export interface Project {
   links?:
     | {
         label: string;
-        url: string;
+        linkType?: ('internal' | 'external') | null;
+        page?: (number | null) | Page;
+        url?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -532,6 +542,8 @@ export interface PagesSelect<T extends boolean = true> {
                 | T
                 | {
                     label?: T;
+                    linkType?: T;
+                    page?: T;
                     href?: T;
                     style?: T;
                   };
@@ -539,6 +551,8 @@ export interface PagesSelect<T extends boolean = true> {
                 | T
                 | {
                     label?: T;
+                    linkType?: T;
+                    page?: T;
                     href?: T;
                   };
               id?: T;
@@ -560,6 +574,8 @@ export interface PagesSelect<T extends boolean = true> {
                 | T
                 | {
                     label?: T;
+                    linkType?: T;
+                    page?: T;
                     href?: T;
                     style?: T;
                   };
@@ -576,6 +592,8 @@ export interface PagesSelect<T extends boolean = true> {
                 | T
                 | {
                     label?: T;
+                    linkType?: T;
+                    page?: T;
                     href?: T;
                     style?: T;
                   };
@@ -645,6 +663,8 @@ export interface ProjectsSelect<T extends boolean = true> {
     | T
     | {
         label?: T;
+        linkType?: T;
+        page?: T;
         url?: T;
         id?: T;
       };
