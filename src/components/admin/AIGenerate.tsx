@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useField, useAllFormFields } from '@payloadcms/ui'
+import { useField, useAllFormFields, useForm } from '@payloadcms/ui'
 
 function richTextToPlain(data: any): string {
   if (!data?.root?.children) return ''
@@ -53,6 +53,7 @@ export default function AIGenerate({ hint }: { hint?: string }) {
 
   const { value, setValue, path } = useField<any>({ path: '' })
   const [fields, dispatch] = useAllFormFields()
+  const { setModified } = useForm()
 
   const fieldName = path.split('.').pop() || path
   const isRichText = typeof value === 'object' && value !== null && value?.root != null
@@ -110,6 +111,7 @@ export default function AIGenerate({ hint }: { hint?: string }) {
             value: newValue,
             initialValue: newValue,
           } as any)
+          setModified(true)
         } else {
           setValue(data.text)
         }
