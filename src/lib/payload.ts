@@ -3,9 +3,9 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
 // Re-export types and client-safe utilities for convenience in server components
-export type { MediaAsset, CVEntry, CVData, SiteSettingsData, CTAData, CTALinkData, PageBlock, PageData, ProjectSection, ProjectData, CoverLetterData } from './types'
+export type { MediaAsset, CVEntry, CVData, SiteSettingsData, CTAData, CTALinkData, RichTextContent, PageBlock, PageData, ProjectSection, ProjectData, CoverLetterData } from './types'
 export { getMediaProps } from './media'
-export { asResolvedProjects, isShareExpired, resolveCTAHref } from './utils'
+export { asResolvedProjects, isShareExpired, resolveCTAHref, hasRichText, richTextToPlain, plainToRichText } from './utils'
 
 const getPayloadClient = cache(async () => getPayload({ config: configPromise }))
 

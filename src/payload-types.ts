@@ -166,7 +166,21 @@ export interface Page {
         | {
             eyebrow?: string | null;
             headline: string;
-            intro?: string | null;
+            intro?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
             media?: (number | null) | Media;
             cta?: {
               label?: string | null;
@@ -188,7 +202,21 @@ export interface Page {
         | {
             eyebrow?: string | null;
             title: string;
-            body: string;
+            body?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
             mediaType?: ('image' | 'video' | 'none') | null;
             media?: (number | null) | Media;
             videoUrl?: string | null;
@@ -207,7 +235,21 @@ export interface Page {
             blockType: 'textMedia';
           }
         | {
-            quote: string;
+            quote?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
             attribution?: string | null;
             context?: string | null;
             cta?: {
@@ -312,8 +354,36 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
-  challenge?: string | null;
-  solution?: string | null;
+  challenge?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  solution?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   metrics?:
     | {
         value: string;
@@ -326,7 +396,21 @@ export interface Project {
         | {
             eyebrow?: string | null;
             title: string;
-            body: string;
+            body?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'text';
@@ -334,7 +418,21 @@ export interface Project {
         | {
             eyebrow?: string | null;
             title: string;
-            body: string;
+            body?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
             layout?: ('media-right' | 'media-left' | 'text-only') | null;
             media?: (number | null) | Media;
             caption?: string | null;
@@ -357,7 +455,21 @@ export interface Project {
             blockType: 'stats';
           }
         | {
-            quote: string;
+            quote?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
             attribution?: string | null;
             context?: string | null;
             id?: string | null;
@@ -873,7 +985,21 @@ export interface Cv {
   linkedin?: string | null;
   profileImage?: (number | null) | Media;
   logo?: (number | null) | Media;
-  summary?: string | null;
+  summary?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   experience?:
     | {
         duration?: string | null;

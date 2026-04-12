@@ -1,16 +1,6 @@
 import Image from 'next/image'
-import { ProjectSection, getMediaProps } from '@/lib/payload'
-
-function Paragraphs({ text }: { text?: string | null }) {
-  if (!text) return null
-  return (
-    <div className="space-y-4 body-lg">
-      {text.split('\n\n').map((paragraph, index) => (
-        paragraph.trim() ? <p key={index}>{paragraph.trim()}</p> : null
-      ))}
-    </div>
-  )
-}
+import { ProjectSection, getMediaProps, hasRichText } from '@/lib/payload'
+import { InlineRichText } from '@/components/blocks/InlineRichText'
 
 export function ProjectSections({ sections }: { sections?: ProjectSection[] | null }) {
   if (!sections?.length) return null
@@ -24,7 +14,9 @@ export function ProjectSections({ sections }: { sections?: ProjectSection[] | nu
             <section key={key} className="section-card">
               {section.eyebrow && <p className="mb-4 label-sm">{section.eyebrow}</p>}
               {section.title && <h2 className="mb-5 title-lg">{section.title}</h2>}
-              <Paragraphs text={section.body} />
+              {hasRichText(section.body) && (
+                <InlineRichText data={section.body} className="space-y-4 body-lg" />
+              )}
             </section>
           )
         }
@@ -40,7 +32,9 @@ export function ProjectSections({ sections }: { sections?: ProjectSection[] | nu
                 <div className={mediaFirst ? 'md:order-2' : ''}>
                   {section.eyebrow && <p className="mb-4 label-sm">{section.eyebrow}</p>}
                   {section.title && <h2 className="mb-5 title-lg">{section.title}</h2>}
-                  <Paragraphs text={section.body} />
+                  {hasRichText(section.body) && (
+                    <InlineRichText data={section.body} className="space-y-4 body-lg" />
+                  )}
                 </div>
                 {!textOnly && media && (
                   <figure className={mediaFirst ? 'md:order-1' : ''}>
@@ -75,9 +69,11 @@ export function ProjectSections({ sections }: { sections?: ProjectSection[] | nu
         if (section.blockType === 'quote') {
           return (
             <section key={key} className="section-card">
-              <blockquote className="max-w-4xl title-lg leading-[1.3]">
-                &ldquo;{section.quote}&rdquo;
-              </blockquote>
+              {hasRichText(section.quote) && (
+                <blockquote className="max-w-4xl title-lg leading-[1.3]">
+                  <InlineRichText data={section.quote} />
+                </blockquote>
+              )}
               {(section.attribution || section.context) && (
                 <p className="mt-5 label-sm">
                   {[section.attribution, section.context].filter(Boolean).join(' \u2022 ')}

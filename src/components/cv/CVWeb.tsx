@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import { SkillDots } from './SkillDots'
 import { getMediaProps } from '@/lib/media'
+import { hasRichText } from '@/lib/utils'
+import { InlineRichText } from '@/components/blocks/InlineRichText'
 import type { CVData, CVEntry } from '@/lib/types'
 
 const MONTH_MAP: Record<string, number> = {
@@ -63,7 +65,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
 
   return (
     <div className="cv-web space-y-8">
-      {/* ── Hero ─────────────────────────────────────────── */}
+      {/* Hero */}
       <section className="section-card">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
           {profileImage && (
@@ -91,7 +93,9 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
             </div>
             <h1 className="title-lg uppercase tracking-[0.05em]">{cv.name}</h1>
             {cv.title && <p className="mt-2 title-sm text-[var(--on-surface-variant)]">{cv.title}</p>}
-            {cv.summary && <p className="mt-4 body-md max-w-2xl">{cv.summary}</p>}
+            {hasRichText(cv.summary) && (
+              <InlineRichText data={cv.summary} className="mt-4 body-md max-w-2xl" />
+            )}
           </div>
         </div>
 
@@ -154,7 +158,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
         </div>
       </section>
 
-      {/* ── Experience ───────────────────────────────────── */}
+      {/* Experience */}
       {(cv.experience?.length || 0) > 0 && (
         <section>
           <WebSectionTitle id="experience">Berufserfahrung</WebSectionTitle>
@@ -194,7 +198,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
         </section>
       )}
 
-      {/* ── Skills ───────────────────────────────────────── */}
+      {/* Skills */}
       {(cv.skills?.length || 0) > 0 && (
         <section>
           <WebSectionTitle id="skills">Kompetenzen & Fähigkeiten</WebSectionTitle>
@@ -227,7 +231,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
         </section>
       )}
 
-      {/* ── Education ────────────────────────────────────── */}
+      {/* Education */}
       {(cv.education?.length || 0) > 0 && (
         <section>
           <WebSectionTitle id="education">Ausbildung</WebSectionTitle>
@@ -249,7 +253,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
         </section>
       )}
 
-      {/* ── Certificates ─────────────────────────────────── */}
+      {/* Certificates */}
       {(cv.certificates?.length || 0) > 0 && (
         <section>
           <WebSectionTitle id="certificates">Zertifikate</WebSectionTitle>

@@ -24,7 +24,7 @@ export interface CVData {
   linkedin?: string | null
   profileImage?: MediaAsset
   logo?: MediaAsset
-  summary?: string | null
+  summary?: RichTextContent
   skillMaxDots?: number | null
   skills?: { name?: string | null; level?: number | null }[] | null
   languages?: { name?: string | null; level?: string | null }[] | null
@@ -64,13 +64,16 @@ export interface CTALinkData {
   href?: string | null
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type RichTextContent = any
+
 export type PageBlock =
   | {
       blockType: 'hero'
       id?: string | number | null
       eyebrow?: string | null
       headline?: string | null
-      intro?: string | null
+      intro?: RichTextContent
       media?: MediaAsset
       cta?: CTAData | null
       secondaryCTA?: CTALinkData | null
@@ -80,7 +83,7 @@ export type PageBlock =
       id?: string | number | null
       eyebrow?: string | null
       title?: string | null
-      body?: string | null
+      body?: RichTextContent
       mediaType?: 'image' | 'video' | 'none' | null
       media?: MediaAsset
       videoUrl?: string | null
@@ -92,7 +95,7 @@ export type PageBlock =
   | {
       blockType: 'quote'
       id?: string | number | null
-      quote?: string | null
+      quote?: RichTextContent
       attribution?: string | null
       context?: string | null
       cta?: CTAData | null
@@ -109,7 +112,7 @@ export type PageBlock =
   | {
       blockType: 'richText'
       id?: string | number | null
-      content?: any
+      content?: RichTextContent
     }
 
 export interface PageData {
@@ -130,14 +133,14 @@ export type ProjectSection =
       id?: string | number | null
       eyebrow?: string | null
       title?: string | null
-      body?: string | null
+      body?: RichTextContent
     }
   | {
       blockType: 'mediaHighlight'
       id?: string | number | null
       eyebrow?: string | null
       title?: string | null
-      body?: string | null
+      body?: RichTextContent
       layout?: 'media-right' | 'media-left' | 'text-only' | null
       media?: MediaAsset
       caption?: string | null
@@ -151,7 +154,7 @@ export type ProjectSection =
   | {
       blockType: 'quote'
       id?: string | number | null
-      quote?: string | null
+      quote?: RichTextContent
       attribution?: string | null
       context?: string | null
     }
@@ -169,8 +172,8 @@ export interface ProjectData {
   coverImage?: MediaAsset
   tags?: { label?: string | null }[] | null
   links?: { label?: string | null; linkType?: 'internal' | 'external' | null; page?: { slug?: string | null } | number | null; url?: string | null }[] | null
-  challenge?: string | null
-  solution?: string | null
+  challenge?: RichTextContent
+  solution?: RichTextContent
   metrics?: { value?: string | null; label?: string | null }[] | null
   sections?: ProjectSection[] | null
 }

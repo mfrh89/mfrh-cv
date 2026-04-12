@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import type { PageBlock } from '@/lib/payload'
-import { getMediaProps } from '@/lib/payload'
+import { getMediaProps, hasRichText } from '@/lib/payload'
 import { BlockCTA } from './BlockCTA'
+import { InlineRichText } from './InlineRichText'
 
 type TextMediaData = Extract<PageBlock, { blockType: 'textMedia' }>
 
@@ -54,11 +55,9 @@ export function TextMediaBlock({ block }: { block: TextMediaData }) {
           <div className={mediaFirst ? 'md:order-2' : ''}>
             {block.eyebrow && <p className="mb-4 label-sm">{block.eyebrow}</p>}
             <h2 className="mb-5 title-lg">{block.title}</h2>
-            <div className="space-y-4 body-lg">
-              {block.body?.split('\n\n').map((p, i) =>
-                p.trim() ? <p key={i}>{p.trim()}</p> : null,
-              )}
-            </div>
+            {hasRichText(block.body) && (
+              <InlineRichText data={block.body} className="space-y-4 body-lg" />
+            )}
             {block.cta?.label && (
               <div className="mt-6">
                 <BlockCTA cta={block.cta} />
