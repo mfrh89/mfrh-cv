@@ -9,7 +9,7 @@ export function RichTextBlock({ block }: { block: RichTextData }) {
 
   return (
     <section className="page-container py-8 md:py-14">
-      <div className="section-card mx-auto max-w-[760px] prose prose-lg">
+      <div className="section-card mx-auto max-w-[760px] prose">
         <RichText data={block.content as SerializedEditorState<SerializedLexicalNode>} />
       </div>
     </section>

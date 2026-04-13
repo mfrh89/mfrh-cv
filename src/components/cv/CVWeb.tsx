@@ -144,7 +144,7 @@ export function CVWeb({ cv, serverURL }: { cv: CVData; serverURL: string }) {
                   )}
                 </div>
                 {job.description && (
-                  <ul className="mt-4 space-y-2">
+                  <ul className="mt-[26px] space-y-2">
                     {job.description.split('\n').map((point, j) => {
                       const trimmed = point.trim()
                       if (!trimmed) return null
