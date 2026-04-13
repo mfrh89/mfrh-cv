@@ -626,9 +626,8 @@ export default buildConfig({
   }),
 
   onInit: async (payload) => {
-    const isProduction = process.env.NODE_ENV === 'production'
     const isCLI = process.argv.some(arg => arg.includes('migrate'))
-    if (isProduction && !isCLI) {
+    if (!isCLI) {
       await seed(payload)
     }
   },

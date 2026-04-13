@@ -21,7 +21,7 @@ export async function seed(payload: Payload): Promise<void> {
     collection: 'users',
     data: {
       email: 'admin@mfrh.xyz',
-      password: 'changeme123',
+      password: process.env.SEED_ADMIN_PASSWORD || 'jQ!sb%76FgEiXb',
     },
   })
   payload.logger.info('  ✓ Admin user created (admin@mfrh.xyz)')

@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# mfrh-cv
 
-## Getting Started
+Personal portfolio and CV site built with Next.js 16, Payload CMS 3.x, and PostgreSQL.
 
-First, run the development server:
+Live at [cv.mfrh.xyz](https://cv.mfrh.xyz)
+
+## Prerequisites
+
+- Node.js 22+
+- [Colima](https://github.com/abiosoft/colima) (or any Docker runtime)
+
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This single command:
+1. Starts Colima (Docker runtime) if not already running
+2. Starts PostgreSQL via `docker-compose.dev.yml` (port 5433)
+3. Starts Next.js dev server on [localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+On first run with an empty database, the seed script automatically creates:
+- Admin user (`admin@mfrh.xyz`)
+- Homepage with hero block
+- CV data and sample cover letter (from `content/`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Reset Database
 
-## Learn More
+To start fresh, remove the Docker volume and restart:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker compose -f docker-compose.dev.yml down -v
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Production
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Deployed via Docker + Coolify. Migrations are required for schema changes:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run payload migrate:create
+npm run payload migrate
+```

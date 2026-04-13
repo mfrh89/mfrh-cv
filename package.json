@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "colima start 2>/dev/null; docker compose -f docker-compose.dev.yml up -d && next dev",
     "build": "next build",
     "start": "next start",
     "payload": "payload"
