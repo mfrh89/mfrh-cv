@@ -1,6 +1,70 @@
 [
   {
     "id": 2,
+    "title": "Home",
+    "slug": "home",
+    "layout": [
+      {
+        "id": "69dd37d670dd2b64250b0155",
+        "eyebrow": "Project Manager • Product Owner • Scrum Master",
+        "headline": "Maximilian Huber",
+        "intro": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "type": "paragraph",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Seit über 10 Jahren in der Agenturbranche. Spezialisiert auf Web- und App-Projekte.",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr",
+                "textStyle": "",
+                "textFormat": 0
+              }
+            ],
+            "direction": "ltr"
+          }
+        },
+        "media": null,
+        "blockName": null,
+        "blockType": "hero",
+        "cta": {
+          "label": null,
+          "type": "route",
+          "route": null,
+          "url": null,
+          "style": "primary"
+        },
+        "secondaryCTA": {
+          "label": null,
+          "type": "route",
+          "route": null,
+          "url": null
+        }
+      }
+    ],
+    "meta": {
+      "title": null,
+      "description": null,
+      "image": null
+    }
+  },
+  {
+    "id": 1,
     "title": "Imprint",
     "slug": "imprint",
     "layout": [
@@ -258,70 +322,6 @@
         },
         "blockName": null,
         "blockType": "richText"
-      }
-    ],
-    "meta": {
-      "title": null,
-      "description": null,
-      "image": null
-    }
-  },
-  {
-    "id": 1,
-    "title": "Home",
-    "slug": "home",
-    "layout": [
-      {
-        "id": "69dd37d670dd2b64250b0155",
-        "eyebrow": "Project Manager • Product Owner • Scrum Master",
-        "headline": "Maximilian Huber",
-        "intro": {
-          "root": {
-            "type": "root",
-            "format": "",
-            "indent": 0,
-            "version": 1,
-            "children": [
-              {
-                "type": "paragraph",
-                "format": "",
-                "indent": 0,
-                "version": 1,
-                "children": [
-                  {
-                    "mode": "normal",
-                    "text": "Seit über 10 Jahren in der Agenturbranche. Spezialisiert auf Web- und App-Projekte.",
-                    "type": "text",
-                    "style": "",
-                    "detail": 0,
-                    "format": 0,
-                    "version": 1
-                  }
-                ],
-                "direction": "ltr",
-                "textStyle": "",
-                "textFormat": 0
-              }
-            ],
-            "direction": "ltr"
-          }
-        },
-        "media": null,
-        "blockName": null,
-        "blockType": "hero",
-        "cta": {
-          "label": null,
-          "type": "route",
-          "route": null,
-          "url": null,
-          "style": "primary"
-        },
-        "secondaryCTA": {
-          "label": null,
-          "type": "route",
-          "route": null,
-          "url": null
-        }
       }
     ],
     "meta": {

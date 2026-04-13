@@ -80,19 +80,30 @@ export async function seed(payload: Payload): Promise<void> {
     payload.logger.info(`  ✓ ${(pagesData as unknown[]).length} pages seeded`)
   }
 
-  // 5. Seed cover letter
+  // 5. Seed projects
+  const projectsData = loadJSON(path.join(contentDir, 'projects', 'index.json'))
+  if (Array.isArray(projectsData)) {
+    for (const project of projectsData) {
+      const { id, ...data } = project as Record<string, unknown>
+      await payload.create({
+        collection: 'projects',
+        data: { ...data, _status: 'published' },
+      })
+    }
+    payload.logger.info(`  ✓ ${projectsData.length} project(s) seeded`)
+  }
+
+  // 6. Seed cover letters
   const clData = loadJSON(path.join(contentDir, 'cover-letter', 'index.json'))
-  if (clData) {
-    await payload.create({
-      collection: 'cover-letters',
-      data: {
-        company: 'Links der Isar',
-        role: 'Digitaler Projektmanager',
-        ...clData,
-        _status: 'published',
-      },
-    })
-    payload.logger.info('  ✓ Cover letter seeded')
+  if (Array.isArray(clData)) {
+    for (const cl of clData) {
+      const { id, ...data } = cl as Record<string, unknown>
+      await payload.create({
+        collection: 'cover-letters',
+        data: { ...data, _status: 'published' },
+      })
+    }
+    payload.logger.info(`  ✓ ${clData.length} cover letter(s) seeded`)
   }
 
   payload.logger.info('— Seed complete')
