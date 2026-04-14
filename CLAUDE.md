@@ -4,7 +4,10 @@
 
 **Stack:** Next.js 16 (App Router), Payload CMS 3.x, PostgreSQL, React 19, Tailwind CSS 4, TypeScript
 **DB:** `@payloadcms/db-postgres` — connection via `DATABASE_URI` env var
-**Deploy:** Docker + Coolify on cv.mfrh.xyz
+## Deploy
+- Docker + Coolify on cv.mfrh.xyz
+- Push to `main` triggers auto-deploy via Coolify webhook
+- Entrypoint runs `npx payload migrate` before starting Next.js
 
 ## Structure
 - `src/payload.config.ts` — single-file CMS config (collections: pages, projects, cover-letters, media, users; globals: site-settings, cv)
