@@ -1,4 +1,4 @@
-# mfrh-cv
+# mfrh-xyz
 
 Personal portfolio and CV site built with Next.js 16, Payload CMS 3.x, and PostgreSQL.
 

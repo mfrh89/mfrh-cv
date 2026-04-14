@@ -1,6 +1,6 @@
 services:
   cv:
-    image: ghcr.io/mfrh89/mfrh-cv:latest
+    image: ghcr.io/mfrh89/mfrh-xyz:latest
     restart: unless-stopped
     ports:
       - "${CV_PORT:-3000}:3000"

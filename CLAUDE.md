@@ -1,4 +1,4 @@
-# mfrh-cv
+# mfrh-xyz
 
 @AGENTS.md
 
