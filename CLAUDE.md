@@ -8,6 +8,8 @@
 - Docker + Coolify on cv.mfrh.xyz
 - Push to `main` triggers auto-deploy via Coolify webhook
 - Entrypoint runs `npx payload migrate` before starting Next.js
+- Coolify API available via MCP for deployment status, logs, and config
+- App UUID: `rbr4pcoj9cwiupyu08n1su5r`
 
 ## Structure
 - `src/payload.config.ts` — single-file CMS config (collections: pages, projects, cover-letters, media, users; globals: site-settings, cv)
